@@ -52,3 +52,21 @@ Route::delete('/users/{id}', function ($id) {
     DB::table('users')->where('id', $id)->delete();
     return response()->json(['message' => 'Xóa thành công'])->header('Access-Control-Allow-Origin', '*');
 });
+// Link bí mật để tự động tạo Database khi lên mạng
+Route::get('/setup-db', function () {
+    try {
+        DB::statement("CREATE TABLE IF NOT EXISTS `users` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `name` varchar(255) NOT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+        
+        DB::table('users')->insert([
+            ['name' => 'Lê Huy Hoàng'],
+            ['name' => 'Trần Thị Kim Yến']
+        ]);
+        return 'Chúc mừng cưng! Đã tạo Database và thêm dữ liệu thành công! 🎉';
+    } catch (\Exception $e) {
+        return 'Lỗi rồi: ' . $e->getMessage();
+    }
+});
