@@ -68,7 +68,10 @@ Route::get('/setup-db', function () {
         // 3. Thêm dữ liệu
         DB::table('users')->insert([
             ['name' => 'Lê Huy Hoàng'],
-            ['name' => 'Trần Thị Kim Yến']
+            ['name' => 'Trần Thị Kim Yến'],
+            ['name' => 'Phạm Ngọc Anh Thư'],
+            ['name' => 'Trần Thị Mai Quỳnh'],
+            ['name' => 'Dương Bá Sang']
         ]);
         return 'Chúc mừng cưng! Đã tạo Database và thêm dữ liệu thành công rực rỡ! 🎉';
     } catch (\Exception $e) {
@@ -77,4 +80,7 @@ Route::get('/setup-db', function () {
 });
 Route::get('/', function () {
     return 'Backend King Hotel đang hoạt động ngon lành cành đào! 🎀';
+});
+Route::get('/admin', function () {
+    return view('admin');
 });
