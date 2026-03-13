@@ -75,3 +75,6 @@ Route::get('/setup-db', function () {
         return 'Lỗi rồi: ' . $e->getMessage();
     }
 });
+Route::get('/', function () {
+    return 'Backend King Hotel đang hoạt động ngon lành cành đào! 🎀';
+});
