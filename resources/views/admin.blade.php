@@ -75,7 +75,7 @@
 
     // Hàm Xóa
     function deleteUser(id) {
-        if(confirm('Cưng có chắc chắn muốn xóa người này không?')) {
+        if(confirm('Bạn có chắc muốn xóa thiên thần này không? ✨')) {
             fetch(`${apiUrl}/${id}`, { method: 'DELETE' })
                 .then(() => loadUsers());
         }
