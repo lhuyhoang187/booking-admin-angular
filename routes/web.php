@@ -55,17 +55,22 @@ Route::delete('/users/{id}', function ($id) {
 // Link bí mật để tự động tạo Database khi lên mạng
 Route::get('/setup-db', function () {
     try {
-        DB::statement("CREATE TABLE IF NOT EXISTS `users` (
+        // 1. Xóa thẳng tay bảng cũ (nếu có)
+        DB::statement("DROP TABLE IF EXISTS `users`;");
+        
+        // 2. Tạo bảng mới chỉ có ID và Tên
+        DB::statement("CREATE TABLE `users` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `name` varchar(255) NOT NULL,
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
         
+        // 3. Thêm dữ liệu
         DB::table('users')->insert([
             ['name' => 'Lê Huy Hoàng'],
             ['name' => 'Trần Thị Kim Yến']
         ]);
-        return 'Chúc mừng cưng! Đã tạo Database và thêm dữ liệu thành công! 🎉';
+        return 'Chúc mừng cưng! Đã tạo Database và thêm dữ liệu thành công rực rỡ! 🎉';
     } catch (\Exception $e) {
         return 'Lỗi rồi: ' . $e->getMessage();
     }
