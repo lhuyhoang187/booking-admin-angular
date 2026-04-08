@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 # Editor configuration, see https://editorconfig.org
+=======
+>>>>>>> 0f56d32980ad0d8a767e0eb8d5aaf058d263c9b2
 root = true
 
 [*]
 charset = utf-8
+<<<<<<< HEAD
 indent_style = space
 indent_size = 2
 insert_final_newline = true
@@ -15,3 +19,19 @@ ij_typescript_use_double_quotes = false
 [*.md]
 max_line_length = off
 trim_trailing_whitespace = false
+=======
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[docker-compose.yml]
+indent_size = 4
+>>>>>>> 0f56d32980ad0d8a767e0eb8d5aaf058d263c9b2
