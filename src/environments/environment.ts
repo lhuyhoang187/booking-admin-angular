@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'booking-backend-laravel-production.up.railway.app'
+  apiUrl: 'https://booking-backend-laravel-production.up.railway.app/'
 };
