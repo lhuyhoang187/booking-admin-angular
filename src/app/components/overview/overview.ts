@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HotelService } from '../../services/hotel'; 
+import { HotelService } from '../../services/hotel';
+
 
 @Component({
   selector: 'app-overview',
