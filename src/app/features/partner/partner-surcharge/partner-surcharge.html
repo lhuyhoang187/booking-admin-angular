@@ -1,0 +1,70 @@
+<div class="partner-container">
+    <div class="header-action">
+        <div>
+            <h2>Quản Lý Loại Phụ Thu</h2>
+            <p>Thiết lập các loại phí phát sinh để Lễ tân chọn khi thanh toán.</p>
+        </div>
+        <button class="btn btn-primary" (click)="openModal()">+ Thêm Loại Mới</button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">Đang tải dữ liệu...</div>
+
+    <div class="table-responsive" *ngIf="!isLoading">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 80px;">STT</th>
+                    <th>Tên Loại Phụ Thu</th>
+                    <th>Mô tả chi tiết</th>
+                    <th style="width: 180px; text-align: center;">Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let cat of list; let i = index">
+                    <td>#{{ i + 1 }}</td>
+                    <td style="font-weight: bold; color: #334155;">{{ cat.name }}</td>
+                    <td style="color: #64748b; font-size: 13px;">{{ cat.description || '---' }}</td>
+                    <td style="text-align: center;">
+                        <button class="mini-btn text-edit" (click)="openModal(cat)">Sửa</button>
+                        <button class="mini-btn text-delete" (click)="delete(cat.id)">Xóa</button>
+                    </td>
+                </tr>
+                <tr *ngIf="list.length === 0">
+                    <td colspan="4" style="text-align: center; padding: 30px; color: #94a3b8;">
+                        Chưa có dữ liệu. Hãy bấm "Thêm Loại Mới".
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal" *ngIf="showModal">
+        <div class="modal-content">
+            <h3 style="margin-top: 0; color: #1e293b; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+                {{ isEdit ? 'Cập Nhật Loại Phụ Thu' : 'Thêm Loại Phụ Thu Mới' }}
+            </h3>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px;">Tên Loại Phụ Thu
+                    (*)</label>
+                <input type="text" class="form-control" [(ngModel)]="item.name"
+                    placeholder="VD: Check-out trễ, Phụ thu thêm người...">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px;">Mô tả chi
+                    tiết</label>
+                <textarea class="form-control" [(ngModel)]="item.description" rows="3"
+                    placeholder="Ghi chú thêm nếu cần..."></textarea>
+            </div>
+
+            <div class="modal-actions" style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-secondary" (click)="closeModal()">Hủy</button>
+                <button class="btn btn-primary" (click)="save()" [disabled]="isSaving"
+                    [style.opacity]="isSaving ? '0.6' : '1'">
+                    {{ isSaving ? '⏳ Đang lưu...' : 'Lưu Lại' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

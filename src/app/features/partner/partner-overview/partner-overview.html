@@ -1,0 +1,21 @@
+<div class="fade-in-up">
+    <h2 class="page-title">Tổng quan hoạt động</h2>
+    <p class="page-subtitle">Chào mừng bạn quay trở lại hệ thống quản lý Khách sạn!</p>
+
+    <div class="stats-grid">
+        <div class="stat-card stat-card-green">
+            <h4>Đơn hàng mới chờ duyệt</h4>
+            <div class="stat-value">{{ stats.pending_orders }}</div>
+        </div>
+
+        <div class="stat-card stat-card-blue">
+            <h4>Tổng số loại phòng</h4>
+            <div class="stat-value">{{ stats.total_room_types }}</div>
+        </div>
+
+        <div class="stat-card stat-card-yellow">
+            <h4>Tổng Doanh thu</h4>
+            <div class="stat-value">{{ stats.total_revenue | number }} đ</div>
+        </div>
+    </div>
+</div>

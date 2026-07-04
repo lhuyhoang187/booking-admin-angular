@@ -1,0 +1,69 @@
+<div class="page-container">
+    <div class="page-header">
+        <h3>Danh Sách Đối Tác Khách Sạn Chờ Phê Duyệt</h3>
+        <p>Hệ thống ghi nhận đơn đăng ký mở bán phòng từ các chủ khách sạn toàn quốc.</p>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-state">Đang tải danh sách chờ duyệt...</div>
+
+    <div *ngIf="!isLoading && pendingList.length > 0" class="table-responsive">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên Khách Sạn</th>
+                    <th>Thành Phố</th>
+                    <th>Địa Chỉ Chi Tiết</th>
+                    <th>Người Đại Diện (Đối tác)</th>
+                    <th>Liên Hệ</th>
+                    <th style="text-align: center;">Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of pendingList">
+                    <td><strong>#{{ item.id }}</strong></td>
+                    <td><span class="hotel-name-txt">{{ item.name }}</span></td>
+                    <td>{{ item.city }}</td>
+                    <td>{{ item.address }}</td>
+                    <td>
+                        <span *ngIf="item.partner">{{ item.partner.last_name }} {{ item.partner.first_name }}</span>
+                        <span *ngIf="!item.partner" class="text-muted">Không có dữ liệu</span>
+                    </td>
+                    <td>
+                        <div *ngIf="item.partner" style="font-size: 13px;">
+                            <div>📧 {{ item.partner.email }}</div>
+                            <div style="margin-top: 2px;">📞 {{ item.partner.phone || 'Chưa cập nhật' }}</div>
+                        </div>
+                    </td>
+                    <td style="text-align: center;">
+                        <div class="action-buttons">
+                            <button class="btn-approve" (click)="approve(item.id)">Phê Duyệt</button>
+                            <button class="btn-reject" (click)="openRejectModal(item.id)">Từ Chối</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="!isLoading && pendingList.length === 0" class="empty-state">
+        🎉 Tuyệt vời! Hiện tại không còn đơn đăng ký nào cần phê duyệt.
+    </div>
+
+    <div *ngIf="showRejectModal" class="modal-overlay">
+        <div class="modal-box">
+            <h4>Lý Do Từ Chối Đăng Ký</h4>
+            <p>Vui lòng nhập lý do cụ thể (Thông tin này có thể được gửi email phản hồi tới đối tác).</p>
+
+            <textarea [(ngModel)]="rejectReason"
+                placeholder="Ví dụ: Địa chỉ khách sạn không rõ ràng hoặc giấy phép kinh doanh không hợp lệ..." rows="4"
+                class="form-control"></textarea>
+
+            <div class="modal-actions">
+                <button class="btn-close-modal" (click)="closeRejectModal()">Hủy</button>
+                <button class="btn-submit-reject" [disabled]="!rejectReason.trim()" (click)="submitReject()">Xác Nhận Từ
+                    Chối</button>
+            </div>
+        </div>
+    </div>
+</div>

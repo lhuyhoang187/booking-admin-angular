@@ -1,0 +1,46 @@
+<div class="admin-container">
+  <h2>Danh Sách Đối Tác Đang Hoạt Động</h2>
+  <p>Quản lý các khách sạn đang mở bán trên hệ thống.</p>
+
+  <div *ngIf="isLoading" class="loading">Đang tải danh sách...</div>
+
+  <table class="table" *ngIf="!isLoading && partnerList.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tên Khách Sạn</th>
+        <th>Chủ Sở Hữu</th>
+        <th>Email</th>
+        <th>Số Điện Thoại</th>
+        <th>Thao Tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of partnerList">
+        <td>{{ item.id }}</td>
+        <td><strong>{{ item.name }}</strong><br/><small>{{ item.address }}, {{ item.city }}</small></td>
+        <td>{{ item.partner?.last_name }} {{ item.partner?.first_name }}</td>
+        <td>{{ item.partner?.email }}</td>
+        <td>{{ item.partner?.phone }}</td>
+        <td>
+          <button class="btn btn-danger" (click)="openSuspendModal(item.id)">Khóa / Đình chỉ</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!isLoading && partnerList.length === 0" class="empty-state">
+    Không có đối tác nào đang hoạt động.
+  </div>
+
+  <div class="modal" *ngIf="showSuspendModal">
+    <div class="modal-content">
+      <h3>Lý do khóa tài khoản?</h3>
+      <textarea [(ngModel)]="suspendReason" placeholder="Nhập lý do vi phạm (Bắt buộc)..."></textarea>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" (click)="closeSuspendModal()">Hủy</button>
+        <button class="btn btn-danger" (click)="submitSuspend()">Xác nhận Khóa</button>
+      </div>
+    </div>
+  </div>
+</div>

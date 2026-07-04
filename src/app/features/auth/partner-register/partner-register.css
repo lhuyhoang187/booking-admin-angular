@@ -1,0 +1,158 @@
+.register-container {
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.register-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 800px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.register-header {
+    background-color: #1c2930;
+    color: #ffffff;
+    padding: 30px 40px;
+    text-align: center;
+}
+
+.register-header h2 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    color: #dfa974;
+}
+
+.stepper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.step {
+    font-size: 14px;
+    font-weight: bold;
+    color: #888;
+    transition: color 0.3s;
+}
+
+.step.active {
+    color: #dfa974;
+}
+
+.step-line {
+    flex: 1;
+    height: 2px;
+    background-color: #444;
+    margin: 0 15px;
+    transition: background-color 0.3s;
+}
+
+.step-line.active {
+    background-color: #dfa974;
+}
+
+form {
+    padding: 40px;
+}
+
+.step-content h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border-color: #dfa974;
+    box-shadow: 0 0 0 3px rgba(223, 169, 116, 0.2);
+}
+
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.checkbox-item input {
+    width: 18px;
+    height: 18px;
+    accent-color: #dfa974;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.btn-back {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: auto;
+}
+
+.btn-next,
+.btn-submit {
+    background-color: #dfa974;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}

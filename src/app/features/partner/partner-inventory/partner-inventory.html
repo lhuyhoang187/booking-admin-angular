@@ -1,0 +1,205 @@
+<div class="inventory-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 style="color: #1e1b4b; margin: 0; font-weight: 800;">Lịch Giá & Tình Trạng Phòng</h2>
+            <p style="color: #64748b;">Điều chỉnh giá động toàn diện và đóng/mở bán phòng linh hoạt.</p>
+        </div>
+        <button class="btn btn-primary fw-bold px-4" (click)="openBulkModal()">
+            ⚙️ Điều chỉnh tỷ lệ hàng loạt
+        </button>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-3 bg-white p-3">
+        <div class="d-flex align-items-center gap-4 text-dark font-weight-bold" style="font-size: 13px;">
+            <span class="d-flex align-items-center gap-2">🛡️ <b>Chú thích bảng lịch:</b></span>
+            <span class="d-flex align-items-center gap-1"><span class="badge-legend mode-base"></span> Giá cơ bản</span>
+            <span class="d-flex align-items-center gap-1"><span class="badge-legend mode-custom"></span> Giá tùy chỉnh
+                thủ công</span>
+            <span class="d-flex align-items-center gap-1"><span class="badge-legend mode-closed"></span> Phòng đang đóng
+                bán (🔒)</span>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-3 bg-white p-3">
+        <div class="d-flex align-items-center flex-wrap justify-content-between gap-3">
+            <div class="btn-group shadow-sm">
+                <button class="btn btn-outline-secondary" (click)="shiftDays(-7)">« 1 Tuần</button>
+                <button class="btn btn-outline-secondary" (click)="shiftDays(-1)">‹</button>
+                <button class="btn btn-outline-secondary bg-light text-dark fw-bold" (click)="goToToday()">Hôm
+                    nay</button>
+                <button class="btn btn-outline-secondary" (click)="shiftDays(1)">›</button>
+                <button class="btn btn-outline-secondary" (click)="shiftDays(7)">1 Tuần »</button>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 text-dark">
+                <input type="date" class="form-control form-control-sm" [(ngModel)]="startDate"
+                    (change)="loadInventory()">
+                <span>đến</span>
+                <input type="date" class="form-control form-control-sm" [(ngModel)]="endDate"
+                    (change)="loadInventory()">
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 bg-white text-dark" style="overflow-x: auto;">
+        <table class="table table-bordered table-matrix mb-0">
+            <thead>
+                <tr class="bg-light">
+                    <th class="sticky-col font-title" style="min-width: 240px; z-index: 5;">TẤT CẢ CÁC LOẠI PHÒNG</th>
+                    <th *ngFor="let day of headers" class="text-center p-2 day-header"
+                        [class.weekend]="day.day_name === 'T7' || day.day_name === 'CN'">
+                        <div class="day-name text-uppercase">{{ day.day_name }}</div>
+                        <div class="day-label text-muted fw-bold">{{ day.day_label }}</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="isLoading">
+                    <td [attr.colspan]="headers.length + 1" class="text-center p-5 text-muted">Đang tính toán ma trận dữ
+                        liệu lịch...</td>
+                </tr>
+
+                <ng-container *ngIf="!isLoading">
+                    <tr *ngFor="let row of gridData">
+                        <td class="sticky-col fw-bold bg-white align-middle">
+                            {{ row.room_type_name }}
+                            <div class="text-muted small mt-1" style="font-weight: normal; font-size: 11px;">Mặc định:
+                                {{ formatPrice(row.base_price) }}</div>
+                        </td>
+
+                        <td *ngFor="let day of row.days_data" class="matrix-cell"
+                            [class.cell-closed]="day.is_closed === 1"
+                            [class.bg-increase]="day.trend === 'up' && day.is_closed === 0"
+                            [class.bg-decrease]="day.trend === 'down' && day.is_closed === 0">
+
+                            <div class="cell-content p-2" *ngIf="day.is_closed === 0">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="icon-manual">{{ day.is_custom ? '✏️' : '' }}</span>
+
+                                    <span *ngIf="day.trend === 'up'" class="text-success fw-bold icon-trend">↗</span>
+                                    <span *ngIf="day.trend === 'down'" class="text-danger fw-bold icon-trend">↘</span>
+                                </div>
+
+                                <div class="cell-price fw-bold text-center mb-1">
+                                    {{ formatPrice(day.price).replace(',00 ₫', 'đ').replace(' ₫', 'đ') }}
+                                </div>
+
+                                <div class="d-flex align-items-center gap-1 mt-auto">
+                                    <span class="percent-text">{{ day.percent_change > 0 ? '+' : '' }}{{
+                                        day.percent_change }}%</span>
+                                    <div class="progress-bar-tiny flex-grow-1" [class.bg-success]="day.trend === 'up'"
+                                        [class.bg-danger]="day.trend === 'down'"
+                                        [class.bg-secondary]="day.trend === 'none'"
+                                        [class.opacity-25]="day.trend === 'none'"></div>
+                                </div>
+                            </div>
+
+                            <div class="cell-content p-2 d-flex justify-content-center align-items-center"
+                                *ngIf="day.is_closed === 1">
+                                <div class="text-danger fw-bold">🔒 ĐÓNG</div>
+                            </div>
+
+                            <button class="quick-toggle-btn shadow"
+                                (click)="quickToggleClose(row.room_type_id, day.date, day.is_closed)">
+                                {{ day.is_closed === 1 ? '🔓 Mở' : '🔒 Khóa' }}
+                            </button>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="custom-modal-overlay" *ngIf="showBulkModal" (click)="showBulkModal = false">
+    <div class="custom-modal-content" (click)="$event.stopPropagation()" style="max-width: 580px;">
+        <div class="modal-header p-4 bg-light d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 fw-bold" style="color: #1e293b;">📊 Điều chỉnh tỷ lệ & cấu hình lịch</h4>
+            <button class="btn-close" (click)="showBulkModal = false"></button>
+        </div>
+        <div class="modal-body p-4 text-dark">
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Các loại phòng bị ảnh hưởng:</label>
+                <div class="d-flex flex-wrap gap-2">
+                    <button *ngFor="let row of gridData" type="button" class="btn btn-sm btn-role-select"
+                        [class.active]="bulkForm.room_type_ids.includes(row.room_type_id)"
+                        (click)="toggleRoomTypeSelection(row.room_type_id)">
+                        {{ row.room_type_name }}
+                    </button>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-6">
+                    <label class="form-label fw-bold">Từ ngày:</label>
+                    <input type="date" class="form-control" [(ngModel)]="bulkForm.start_date">
+                </div>
+                <div class="col-6">
+                    <label class="form-label fw-bold">Đến ngày:</label>
+                    <input type="date" class="form-control" [(ngModel)]="bulkForm.end_date">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Hình thức điều chỉnh giá:</label>
+                <div class="btn-group d-flex w-100 shadow-sm" role="group">
+                    <button type="button" class="btn btn-outline-primary fw-bold w-100"
+                        [class.active]="bulkForm.update_type === 'percent'" (click)="bulkForm.update_type = 'percent'">%
+                        Phần trăm</button>
+                    <button type="button" class="btn btn-outline-primary fw-bold w-100"
+                        [class.active]="bulkForm.update_type === 'fixed'" (click)="bulkForm.update_type = 'fixed'">$ Giá
+                        cố định</button>
+                    <button type="button" class="btn btn-outline-primary fw-bold w-100"
+                        [class.active]="bulkForm.update_type === 'reset'" (click)="bulkForm.update_type = 'reset'">🔄
+                        Thông thoáng (Reset)</button>
+                </div>
+            </div>
+
+            <div class="card p-3 mb-4 bg-light border-0" *ngIf="bulkForm.update_type !== 'reset'">
+                <div *ngIf="bulkForm.update_type === 'percent'">
+                    <label class="form-label font-weight-bold">Nhập tỷ lệ tăng/giảm giá (Ví dụ: <code>10</code> để tăng
+                        10%, <code>-15</code> để giảm 15%)</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white fw-bold">%</span>
+                        <input type="number" class="form-control" [(ngModel)]="bulkForm.price_value"
+                            placeholder="Nhập số phần trăm...">
+                    </div>
+                </div>
+
+                <div *ngIf="bulkForm.update_type === 'fixed'">
+                    <label class="form-label font-weight-bold">Đặt mức giá bán cố định mới cho các ngày đã chọn:</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white fw-bold">VND</span>
+                        <input type="number" class="form-control" [(ngModel)]="bulkForm.price_value"
+                            placeholder="Nhập giá tiền cụ thể...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-warning border-0" *ngIf="bulkForm.update_type === 'reset'"
+                style="background-color: #fff7ed; color: #c2410c;">
+                ⚠️ <b>Lưu ý:</b> Các mức giá tùy chỉnh đã thiết lập tại dải ngày này sẽ bị xóa bỏ hoàn toàn. Hệ thống sẽ
+                tự động sử dụng lại mức giá gốc ban đầu của khách sạn.
+            </div>
+
+            <div class="card p-3 border-0 bg-light">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="changeStatusCheck"
+                        [(ngModel)]="bulkForm.change_status">
+                    <label class="form-check-label fw-bold" for="changeStatusCheck">Điều chỉnh đồng thời trạng thái
+                        Đóng/Mở phòng</label>
+                </div>
+                <select class="form-select" [disabled]="!bulkForm.change_status" [(ngModel)]="bulkForm.is_closed">
+                    <option [ngValue]="false">🟢 Mở bán bình thường</option>
+                    <option [ngValue]="true">🔴 Đóng phòng hoàn toàn (🔒 KHÓA BÁN)</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="modal-footer p-3 bg-light text-end border-top">
+            <button class="btn btn-secondary px-3" (click)="showBulkModal = false">Hủy bỏ</button>
+            <button class="btn btn-dark px-4 fw-bold shadow-sm" (click)="saveBulkUpdate()">💾 Cứu (Lưu lại)</button>
+        </div>
+    </div>
+</div>

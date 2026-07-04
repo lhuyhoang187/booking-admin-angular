@@ -1,0 +1,74 @@
+<div class="admin-card">
+    <div class="d-flex justify-content-between align-items-start mb-4">
+        <div>
+            <h2 class="page-title">Quản Lý Hướng Nhìn Phòng</h2>
+            <p class="page-subtitle">Thiết lập danh mục hướng nhìn (view) cho các phòng khách sạn.</p>
+        </div>
+        <button class="btn btn-primary btn-add" (click)="openAddModal()">+ Thêm Hướng Nhìn</button>
+    </div>
+
+    <div *ngIf="loading" class="text-center my-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2 text-muted">Đang tải dữ liệu...</p>
+    </div>
+
+    <div class="table-responsive" *ngIf="!loading">
+        <table class="table align-middle custom-table">
+            <thead>
+                <tr>
+                    <th width="10%">ID</th>
+                    <th width="40%">Tên Hướng Nhìn</th>
+                    <th width="20%">Trạng Thái</th>
+                    <th width="30%">Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let view of roomViews">
+                    <td>{{ view.id }}</td>
+                    <td class="fw-bold">{{ view.name }}</td>
+                    <td>
+                        <span class="custom-badge" [ngClass]="view.status ? 'badge-active' : 'badge-inactive'">
+                            {{ view.status ? 'Hoạt động' : 'Tạm ẩn' }}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-warning btn-sm btn-action me-2"
+                            (click)="openEditModal(view)">Sửa</button>
+                        <button class="btn btn-danger btn-sm btn-action" (click)="deleteView(view.id)">Xóa</button>
+                    </td>
+                </tr>
+                <tr *ngIf="roomViews.length === 0">
+                    <td colspan="4" class="text-center py-4 text-muted">Chưa có dữ liệu hướng nhìn nào.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" [style.display]="showModal ? 'flex' : 'none'">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ isEditMode ? 'Sửa Hướng Nhìn' : 'Thêm Hướng Nhìn' }}</h5>
+                <button type="button" class="btn-close" (click)="closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Tên Hướng Nhìn <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" [(ngModel)]="currentView.name" placeholder="VD: Hướng Biển">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Trạng Thái</label>
+                    <select class="form-select" [(ngModel)]="currentView.status">
+                        <option [ngValue]="1">Hoạt động</option>
+                        <option [ngValue]="0">Tạm ẩn</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light border" (click)="closeModal()">Hủy</button>
+                <button type="button" class="btn btn-primary px-4" (click)="saveView()">Lưu Lại</button>
+            </div>
+        </div>
+    </div>
+</div>

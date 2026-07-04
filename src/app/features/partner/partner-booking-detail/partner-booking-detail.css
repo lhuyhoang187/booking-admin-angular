@@ -1,0 +1,255 @@
+:host {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.fade-in-up {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.back-link {
+    text-decoration: none;
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.back-link:hover {
+    color: #475569;
+    text-decoration: underline;
+}
+
+.page-title {
+    margin: 0;
+    color: #1e1b4b;
+}
+
+.booking-code {
+    color: #6366f1;
+}
+
+.status-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.status-pending {
+    background: #fef08a;
+    color: #854d0e;
+}
+
+.status-confirmed {
+    background: #bfdbfe;
+    color: #1e40af;
+}
+
+.status-checked-in {
+    background: #bbf7d0;
+    color: #166534;
+}
+
+.status-checked-out {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.status-cancelled {
+    background: #fecaca;
+    color: #991b1b;
+}
+
+.tab-container {
+    display: flex;
+    border-bottom: 2px solid #e2e8f0;
+    margin-bottom: 20px;
+}
+
+.tab-item {
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #64748b;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.tab-item.active {
+    color: #6366f1;
+    border-bottom-color: #6366f1;
+}
+
+.tab-item:hover:not(.active) {
+    color: #475569;
+    background-color: #f8fafc;
+}
+
+.checkin-panel {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.checkin-success-msg {
+    text-align: center;
+    color: #166534;
+    font-weight: bold;
+    padding: 20px;
+    background-color: #bbf7d0;
+    border-radius: 8px;
+}
+
+.section-title {
+    margin-top: 0;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.section-desc {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.room-grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.no-room-warning {
+    color: #dc3545;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.room-lbl {
+    display: inline-block;
+    border: 2px solid #cbd5e1;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: 0.2s;
+    background: white;
+    color: #333;
+}
+
+.room-lbl:hover {
+    border-color: #94a3b8;
+}
+
+input[type="checkbox"]:checked+.room-lbl {
+    background: #6366f1;
+    color: white;
+    border-color: #6366f1;
+}
+
+.guest-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.form-control {
+    flex: 2;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    outline: none;
+}
+
+.form-control:focus {
+    border-color: #6366f1;
+}
+
+.btn-remove-guest {
+    background: #fecaca;
+    color: #991b1b;
+    border: none;
+    padding: 0 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-remove-guest:hover {
+    background: #fca5a5;
+}
+
+.btn-add-guest {
+    background: #e2e8f0;
+    color: #475569;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 13px;
+    transition: 0.2s;
+}
+
+.btn-add-guest:hover {
+    background: #cbd5e1;
+}
+
+.divider {
+    border: 0;
+    border-top: 1px dashed #cbd5e1;
+    margin: 25px 0;
+}
+
+.action-bar {
+    text-align: right;
+}
+
+.btn-submit-checkin {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+    transition: 0.2s;
+}
+
+.btn-submit-checkin:hover {
+    background: #059669;
+    box-shadow: 0 6px 8px rgba(16, 185, 129, 0.3);
+}
+
+.tab-title {
+    color: #333;
+}

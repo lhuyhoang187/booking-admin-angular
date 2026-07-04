@@ -1,0 +1,134 @@
+<div class="partner-container">
+    <div class="header-action">
+        <div>
+            <h2>Quản Lý Mã Khuyến Mãi (Voucher)</h2>
+            <p>Tạo các chương trình giảm giá để kích thích khách hàng đặt phòng.</p>
+        </div>
+        <button class="btn btn-primary" (click)="openModal()">+ Tạo Mã Mới</button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">Đang tải danh sách...</div>
+
+    <table class="table" *ngIf="!isLoading && itemList.length > 0">
+        <thead>
+            <tr>
+                <th>Mã CODE</th>
+                <th style="white-space: nowrap;">Mức Giảm</th>
+                <th style="white-space: nowrap;">Thời Gian Áp Dụng</th>
+                <th style="white-space: nowrap; text-align: center;">Đã Dùng / Tổng</th>
+                <th style="white-space: nowrap; text-align: center;">Trạng Thái</th>
+                <th style="width: 120px; text-align: center;">Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of itemList">
+                <td>
+                    <span class="voucher-code">{{ item.code }}</span><br>
+                    <small style="color:#666">Đơn tối thiểu: {{ item.min_booking_value | number:'1.0-0' }}đ</small>
+                </td>
+
+                <td style="color: #0d6efd; font-weight: bold; white-space: nowrap;">
+                    {{ item.discount_type == 1 ? (item.discount_value + '%') : (item.discount_value | number:'1.0-0' ) +
+                    'đ' }}
+                    <div *ngIf="item.discount_type == 1 && item.max_discount_amount"
+                        style="font-size: 0.8em; color: #dc3545">
+                        (Tối đa {{ item.max_discount_amount | number:'1.0-0' }}đ)
+                    </div>
+                </td>
+
+                <td style="white-space: nowrap; font-size: 0.9em;">
+                    Bắt đầu: <strong style="color: #198754;">{{ item.start_date | date:'HH:mm dd/MM/yyyy' }}</strong>
+                    <br>
+                    Kết thúc: <strong style="color: #dc3545;">{{ item.end_date | date:'HH:mm dd/MM/yyyy' }}</strong>
+                </td>
+
+                <td style="text-align: center; font-weight: bold;">
+                    <span [class.text-danger]="item.usage_limit && item.used_count >= item.usage_limit">
+                        {{ item.used_count }} / {{ item.usage_limit ? item.usage_limit : '∞' }}
+                    </span>
+                </td>
+
+                <td style="white-space: nowrap; text-align: center;">
+                    <span class="badge" [ngClass]="getSmartStatus(item).class">
+                        {{ getSmartStatus(item).label }}
+                    </span>
+                </td>
+
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn btn-warning" (click)="openModal(item)">Sửa</button>
+                        <button class="btn btn-secondary" *ngIf="item.status == 1"
+                            (click)="toggleStatus(item, 0)">Khóa</button>
+                        <button class="btn btn-success" *ngIf="item.status == 0" (click)="toggleStatus(item, 1)">Mở
+                            Khóa</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="!isLoading && itemList.length === 0" class="empty-state">
+        Chưa có mã khuyến mãi nào được tạo.
+    </div>
+
+    <div class="modal" *ngIf="showModal">
+        <div class="modal-content">
+            <h3>{{ isEditMode ? 'Cập Nhật Voucher' : 'Tạo Voucher Mới' }}</h3>
+            <div class="form-group">
+                <label>Mã Voucher (Code) (*):</label>
+                <input type="text" class="form-control" [(ngModel)]="currentItem.code" placeholder="VD: SUMMER2026"
+                    style="text-transform: uppercase;">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Loại giảm giá (*):</label>
+                    <select class="form-control" [(ngModel)]="currentItem.discount_type">
+                        <option [value]="1">Giảm theo Phần trăm (%)</option>
+                        <option [value]="2">Giảm số tiền cố định (VNĐ)</option>
+                    </select>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Mức giảm (*):</label>
+                    <input type="number" class="form-control" [(ngModel)]="currentItem.discount_value">
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <div class="form-group" style="flex: 1;" *ngIf="currentItem.discount_type == 1">
+                    <label>Giảm tối đa (VNĐ):</label>
+                    <input type="number" class="form-control" [(ngModel)]="currentItem.max_discount_amount">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Đơn tối thiểu (VNĐ):</label>
+                    <input type="number" class="form-control" [(ngModel)]="currentItem.min_booking_value">
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Thời gian bắt đầu (*):</label>
+                    <input type="datetime-local" class="form-control" [(ngModel)]="currentItem.start_date">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Thời gian kết thúc (*):</label>
+                    <input type="datetime-local" class="form-control" [(ngModel)]="currentItem.end_date">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Tổng số lượt sử dụng mã:</label>
+                    <input type="number" class="form-control" [(ngModel)]="currentItem.usage_limit"
+                        placeholder="Bỏ trống nếu không giới hạn">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Số lượt tối đa / 1 Khách:</label>
+                    <input type="number" class="form-control" [(ngModel)]="currentItem.usage_limit_per_user"
+                        placeholder="Mặc định: 1">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" (click)="closeModal()">Hủy</button>
+                <button class="btn btn-primary" (click)="saveItem()">Lưu Lại</button>
+            </div>
+        </div>
+    </div>
+</div>

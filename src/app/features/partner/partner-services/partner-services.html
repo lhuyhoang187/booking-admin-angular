@@ -1,0 +1,108 @@
+<div class="partner-container">
+    <div class="header-action">
+        <div>
+            <h2>Quản Lý Dịch Vụ Khách Sạn</h2>
+            <p>Thiết lập các dịch vụ đi kèm để khách hàng chọn khi đặt phòng.</p>
+        </div>
+        <button class="btn btn-primary" (click)="openModal()">+ Thêm Dịch Vụ</button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">Đang tải danh sách...</div>
+
+    <table class="table" *ngIf="!isLoading && serviceList.length > 0">
+        <thead>
+            <tr>
+                <th style="width: 30%;">Tên Dịch Vụ</th>
+                <th>Mô tả</th>
+                <th style="white-space: nowrap;">Đơn Giá (VNĐ)</th>
+                <th style="white-space: nowrap; text-align: center;">Trạng Thái</th>
+                <th style="width: 140px; text-align: center;">Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of serviceList">
+                <td><strong>{{ item.icon }} {{ item.name }}</strong></td>
+                <td><small>{{ item.description || '---' }}</small></td>
+                <td style="color: #d9534f; font-weight: bold; white-space: nowrap;">{{ item.price | number:'1.0-0' }}đ /
+                    {{ item.unit || 'Lượt' }}</td>
+                <td style="white-space: nowrap; text-align: center;">
+                    <span class="badge" [class.bg-success]="item.status == 1" [class.bg-danger]="item.status == 0">
+                        {{ item.status == 1 ? 'Đang cung cấp' : 'Ngừng cung cấp' }}
+                    </span>
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn btn-warning" (click)="openModal(item)">Sửa</button>
+                        <button class="btn btn-danger" *ngIf="item.status == 1"
+                            (click)="toggleServiceStatus(item, 0)">Ngừng</button>
+                        <button class="btn btn-success" *ngIf="item.status == 0"
+                            (click)="toggleServiceStatus(item, 1)">Mở Lại</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="!isLoading && serviceList.length === 0" class="empty-state">
+        Khách sạn chưa có dịch vụ nào.
+    </div>
+
+    <div class="modal" *ngIf="showModal">
+        <div class="modal-content">
+            <h3>{{ isEditMode ? 'Cập Nhật Dịch Vụ' : 'Thêm Dịch Vụ Mới' }}</h3>
+
+            <div class="form-group">
+                <label>Tên dịch vụ (*):</label>
+                <input type="text" class="form-control" [(ngModel)]="currentService.name"
+                    placeholder="VD: Đưa đón sân bay, Giặt ủi...">
+            </div>
+
+            <div style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Đơn giá (VNĐ) (*):</label>
+                    <input type="number" class="form-control" [(ngModel)]="currentService.price" placeholder="0">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Đơn vị tính (*):</label>
+                    <select class="form-control" [(ngModel)]="currentService.unit">
+                        <option value="Lượt">Lượt / Gói</option>
+                        <option value="Kg">Kg</option>
+                        <option value="Suất">Suất / Khách</option>
+                        <option value="Đêm">Đêm</option>
+                        <option value="Giờ">Giờ</option>
+                        <option value="Chuyến">Chuyến / Xe</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Icon (Mã Emoji):</label>
+                <input type="text" class="form-control" [(ngModel)]="currentService.icon"
+                    placeholder="VD: 🚗, 💆‍♀️...">
+            </div>
+
+            <div class="form-group">
+                <label>Mô tả chi tiết:</label>
+                <textarea class="form-control" [(ngModel)]="currentService.description"
+                    placeholder="Nhập mô tả về dịch vụ..."></textarea>
+            </div>
+
+            <div class="form-group" *ngIf="isEditMode">
+                <label>Trạng thái:</label>
+                <select class="form-control" [(ngModel)]="currentService.status">
+                    <option [value]="1">Đang cung cấp</option>
+                    <option [value]="0">Ngừng cung cấp</option>
+                </select>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" (click)="closeModal()">Hủy</button>
+                <button class="btn btn-primary" (click)="saveService()">Lưu Lại</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-notification" [class.toast-error]="toastType === 'error'" *ngIf="showToast">
+        {{ toastMessage }}
+    </div>
+</div>

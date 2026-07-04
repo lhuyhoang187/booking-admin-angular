@@ -1,0 +1,92 @@
+<div class="matrix-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 style="color: #1e1b4b; margin: 0; font-weight: 800;">Sơ Đồ Phòng Trực Quan</h2>
+            <p style="color: #64748b;">Quản lý gán phòng vật lý thời gian thực, điều phối check-in/check-out nhanh
+                chóng.</p>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-3 bg-white p-3">
+        <div class="d-flex align-items-center flex-wrap gap-4 text-dark font-weight-bold" style="font-size: 13px;">
+            <span class="d-flex align-items-center gap-2">🎨 <b>Trạng thái đặt phòng:</b></span>
+            <span class="d-flex align-items-center gap-1"><span class="color-indicator mode-pending"></span> Chờ xác
+                nhận</span>
+            <span class="d-flex align-items-center gap-1"><span class="color-indicator mode-confirmed"></span> Đã xác
+                nhận (Sắp đến)</span>
+            <span class="d-flex align-items-center gap-1"><span class="color-indicator mode-staying"></span> Đang lưu
+                trú (Checked-in)</span>
+            <span class="d-flex align-items-center gap-1"><span class="color-indicator mode-done"></span> Đã trả phòng
+                (Completed)</span>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-3 bg-white p-3">
+        <div class="d-flex align-items-center flex-wrap justify-content-between gap-3">
+            <div class="btn-group shadow-sm">
+                <button class="btn btn-outline-secondary" (click)="shiftDays(-7)">« 1 Tuần</button>
+                <button class="btn btn-outline-secondary" (click)="shiftDays(-1)">‹</button>
+                <button class="btn btn-outline-secondary bg-light text-dark fw-bold" (click)="goToToday()">Hôm
+                    nay</button>
+                <button class="btn btn-outline-secondary" (click)="shiftDays(1)">›</button>
+                <button class="btn btn-outline-secondary" (click)="shiftDays(7)">1 Tuần »</button>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 text-dark">
+                <input type="date" class="form-control form-control-sm" [(ngModel)]="startDate" (change)="loadMatrix()">
+                <span>đến</span>
+                <input type="date" class="form-control form-control-sm" [(ngModel)]="endDate" (change)="loadMatrix()">
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 bg-white text-dark" style="overflow-x: auto;">
+        <table class="table table-bordered matrix-table mb-0">
+            <thead>
+                <tr class="bg-light text-center">
+                    <th class="sticky-side font-title" style="min-width: 220px; z-index: 5;">SỐ PHÒNG / HẠNG PHÒNG</th>
+                    <th *ngFor="let day of headers" class="p-2 cell-header"
+                        [class.is-weekend]="day.day_name === 'T7' || day.day_name === 'CN'">
+                        <div class="hdr-name text-uppercase">{{ day.day_name }}</div>
+                        <div class="hdr-label text-muted">{{ day.day_label }}</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="isLoading">
+                    <td [attr.colspan]="headers.length + 1" class="text-center p-5 text-muted">Đang vẽ ma trận phân phối
+                        buồng phòng...</td>
+                </tr>
+
+                <ng-container *ngIf="!isLoading">
+                    <tr *ngFor="let row of matrixGrid">
+                        <td class="sticky-side bg-white align-middle fw-bold">
+                            <span class="fs-6 text-dark">🚪 {{ row.room_name }}</span>
+                            <div class="text-muted small mt-1" style="font-weight: normal; font-size: 11px;">
+                                {{ row.room_type_name }} | <span
+                                    [class.text-danger]="row.current_status === 0 || row.current_status === 3"
+                                    [class.text-success]="row.current_status === 1">{{
+                                    getRoomStatusLabel(row.current_status) }}</span>
+                            </div>
+                        </td>
+
+                        <td *ngFor="let day of row.days" class="matrix-cell-box text-center p-0"
+                            [class.clickable-occupied]="day.is_occupied" [class.status-0]="day.status === 0"
+                            [class.status-1]="day.status === 1" [class.status-2]="day.status === 2"
+                            [class.status-3]="day.status === 3"
+                            (click)="day.is_occupied ? viewBookingDetail(day.booking_id) : null">
+
+                            <div class="occupied-block p-1" *ngIf="day.is_occupied"
+                                title="Nhấp chuột để xem chi tiết đơn hàng">
+                                <div class="guest-titlefw-bold">{{ day.guest_name }}</div>
+                                <div class="code-subtitle">{{ day.booking_code }}</div>
+                            </div>
+
+                            <div class="empty-block" *ngIf="!day.is_occupied"></div>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>

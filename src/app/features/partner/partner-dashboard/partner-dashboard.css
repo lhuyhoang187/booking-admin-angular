@@ -1,0 +1,187 @@
+/* Khung nền tổng thể sáng và sạch hơn */
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    background-color: #f8fafc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    /* Ngăn chặn cuộn toàn trang */
+}
+
+/* Sidebar phong cách hiện đại (Tím than gradient) */
+.sidebar {
+    width: 270px;
+    min-width: 270px;
+    background: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-height: 100vh;
+    /* 👉 Thêm dòng này để khống chế chiều cao */
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    position: relative;
+}
+
+.brand {
+    padding: 30px 20px;
+    font-size: 20px;
+    font-weight: 800;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: center;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #c7d2fe;
+    flex-shrink: 0;
+    /* Không cho phép phần Logo bị thu nhỏ */
+}
+
+/* KHU VỰC MENU CUỘN ĐƯỢC */
+.menu-list {
+    list-style: none;
+    padding: 15px 10px;
+    margin: 0;
+    flex: 1 1 auto;
+    /* 👉 Đảm bảo tự động co giãn */
+    overflow-y: auto;
+    /* 👉 Bắt buộc bật cuộn khi danh sách quá dài */
+    display: block;
+}
+
+/* Làm đẹp thanh cuộn của Menu (Dành cho Chrome/Edge/Safari) */
+.menu-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.menu-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.menu-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.menu-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Nút bấm menu hiện đại, bo góc tròn */
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    margin-bottom: 5px;
+    color: #a5b4fc;
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.menu-item .icon {
+    font-size: 16px;
+    width: 20px;
+    /* Cố định chiều rộng icon để chữ thẳng hàng */
+    text-align: center;
+}
+
+/* Hiệu ứng lướt chuột */
+.menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: white;
+    transform: translateX(5px);
+}
+
+/* Nút menu ĐANG CHỌN (Nổi bật hẳn lên) */
+.menu-item.active-menu {
+    background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+}
+
+/* Nút Đăng xuất cố định ở dưới cùng */
+.logout-btn {
+    margin: 20px;
+    padding: 14px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fca5a5;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex-shrink: 0;
+    /* Không cho phép nút đăng xuất bị thu nhỏ */
+}
+
+.logout-btn:hover {
+    background-color: #ef4444;
+    color: white;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* Vùng nội dung bên phải */
+.main-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    /* Cho phép nội dung trang tự cuộn */
+    height: 100vh;
+    /* Cố định chiều cao */
+    box-sizing: border-box;
+}
+
+/* Làm đẹp thanh cuộn nội dung chính */
+.main-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.main-content::-webkit-scrollbar-track {
+    background: #f8fafc;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Hiệu ứng mờ dần và trượt lên khi chuyển trang */
+.fade-in-up {
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.notification-badge {
+    background-color: #ef4444;
+    /* Màu đỏ nổi bật */
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+    font-weight: bold;
+    margin-left: auto;
+    /* Đẩy badge sang bên phải */
+    display: inline-block;
+    min-width: 18px;
+    text-align: center;
+}

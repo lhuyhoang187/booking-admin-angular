@@ -1,0 +1,48 @@
+<div class="admin-container">
+    <h2>Danh Sách Khách Hàng</h2>
+    <p>Quản lý tài khoản của người dùng (khách du lịch) trên hệ thống.</p>
+
+    <div *ngIf="isLoading" class="loading">Đang tải danh sách...</div>
+
+    <table class="table" *ngIf="!isLoading && customerList.length > 0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Họ và Tên</th>
+                <th>Giới tính</th>
+                <th>Liên hệ</th>
+                <th>Ngày Đăng Ký</th>
+                <th>Trạng Thái</th>
+                <th>Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of customerList">
+                <td>{{ item.id }}</td>
+                <td><strong>{{ item.last_name }} {{ item.first_name }}</strong></td>
+                <td>{{ item.gender || '---' }}</td>
+                <td>
+                    <div>✉️ {{ item.email }}</div>
+                    <div *ngIf="item.phone">📞 {{ item.phone }}</div>
+                </td>
+                <td>{{ item.created_at | date:'dd/MM/yyyy' }}</td>
+                <td>
+                    <span class="badge" [class.bg-success]="item.is_active == 1"
+                        [class.bg-danger]="item.is_active == 0">
+                        {{ item.is_active == 1 ? 'Hoạt động' : 'Bị Khóa' }}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn" [class.btn-danger]="item.is_active == 1"
+                        [class.btn-success]="item.is_active == 0" (click)="toggleStatus(item.id, item.is_active)">
+                        {{ item.is_active == 1 ? 'Khóa' : 'Mở Khóa' }}
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="!isLoading && customerList.length === 0" class="empty-state">
+        Hệ thống chưa có khách hàng nào đăng ký.
+    </div>
+</div>

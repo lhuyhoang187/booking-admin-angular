@@ -1,0 +1,113 @@
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-header">
+            <h2>Đăng ký Đối tác StayBook</h2>
+            <p>Mở rộng phạm vi kinh doanh cùng chúng tôi</p>
+            <div class="stepper">
+                <div class="step" [class.active]="currentStep >= 1">1. Tài khoản</div>
+                <div class="step-line" [class.active]="currentStep >= 2"></div>
+                <div class="step" [class.active]="currentStep >= 2">2. Thông tin chung</div>
+                <div class="step-line" [class.active]="currentStep >= 3"></div>
+                <div class="step" [class.active]="currentStep >= 3">3. Vị trí</div>
+                <div class="step-line" [class.active]="currentStep >= 4"></div>
+                <div class="step" [class.active]="currentStep >= 4">4. Tiện ích</div>
+            </div>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div *ngIf="currentStep === 1" formGroupName="account" class="step-content">
+                <h3>Tạo tài khoản quản trị</h3>
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="firstName">Họ *</label>
+                        <input type="text" id="firstName" formControlName="firstName" class="form-control">
+                    </div>
+                    <div class="form-group half">
+                        <label for="lastName">Tên *</label>
+                        <input type="text" id="lastName" formControlName="lastName" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" formControlName="email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Số điện thoại *</label>
+                    <input type="text" id="phone" formControlName="phone" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="password">Mật khẩu *</label>
+                    <input type="password" id="password" formControlName="password" class="form-control">
+                </div>
+            </div>
+
+            <div *ngIf="currentStep === 2" formGroupName="property" class="step-content">
+                <h3>Thông tin Cơ sở lưu trú</h3>
+                <div class="form-group">
+                    <label for="propertyName">Tên cơ sở *</label>
+                    <input type="text" id="propertyName" formControlName="propertyName" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="propertyType">Loại hình *</label>
+                    <select id="propertyType" formControlName="propertyType" class="form-control">
+                        <option value="hotel">Khách sạn</option>
+                        <option value="resort">Khu nghỉ dưỡng</option>
+                        <option value="homestay">Homestay</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="taxCode">Mã số thuế *</label>
+                    <input type="text" id="taxCode" formControlName="taxCode" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="businessLicense">Giấy phép kinh doanh *</label>
+                    <input type="file" id="businessLicense" (change)="onFileSelected($event)" class="form-control">
+                </div>
+            </div>
+
+            <div *ngIf="currentStep === 3" formGroupName="location" class="step-content">
+                <h3>Vị trí</h3>
+                <div class="form-group">
+                    <label for="city">Tỉnh / Thành phố *</label>
+                    <select id="city" formControlName="city" class="form-control">
+                        <option value="">-- Chọn --</option>
+                        <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                        <option value="Hà Nội">Hà Nội</option>
+                        <option value="Đà Nẵng">Đà Nẵng</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="address">Địa chỉ chi tiết *</label>
+                    <input type="text" id="address" formControlName="address" class="form-control">
+                </div>
+            </div>
+
+            <div *ngIf="currentStep === 4" formGroupName="facilities" class="step-content">
+                <h3>Tiện ích nổi bật</h3>
+                <div class="checkbox-grid">
+                    <label class="checkbox-item" for="hasWifi">
+                        <input type="checkbox" id="hasWifi" formControlName="hasWifi"> WiFi Miễn phí
+                    </label>
+                    <label class="checkbox-item" for="has24hReception">
+                        <input type="checkbox" id="has24hReception" formControlName="has24hReception"> Lễ tân 24h
+                    </label>
+                    <label class="checkbox-item" for="hasParking">
+                        <input type="checkbox" id="hasParking" formControlName="hasParking"> Bãi đậu xe
+                    </label>
+                    <label class="checkbox-item" for="hasPool">
+                        <input type="checkbox" id="hasPool" formControlName="hasPool"> Hồ bơi
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-back" *ngIf="currentStep > 1" (click)="prevStep()">Quay lại</button>
+                <button type="button" class="btn-next" *ngIf="currentStep < totalSteps" (click)="nextStep()">Tiếp
+                    tục</button>
+                <button type="submit" class="btn-submit" *ngIf="currentStep === totalSteps">
+                    {{ isSubmitting ? 'Đang gửi...' : 'Hoàn tất' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

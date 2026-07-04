@@ -1,0 +1,62 @@
+<div class="admin-wrapper">
+    <aside class="admin-sidebar">
+        <div class="brand">
+            <h3>STAY<span>BOOK</span></h3>
+            <small>Admin Portal</small>
+        </div>
+
+        <nav class="menu">
+            <p class="menu-label">HỆ THỐNG VẬN HÀNH</p>
+            <a routerLink="/admin/pending-partners" routerLinkActive="active" class="menu-item">
+                <span class="icon">🏨</span> Đối tác chờ duyệt
+            </a>
+
+            <a routerLink="/admin/partners" routerLinkActive="active" class="menu-item">
+                <span class="icon">👥</span> Quản lý đối tác
+            </a>
+            <a routerLink="/admin/customers" routerLinkActive="active" class="menu-item">
+                <span class="icon">👤</span> Quản lý khách hàng
+            </a>
+
+            <p class="menu-label" style="margin-top: 20px;">DỮ LIỆU MASTER</p>
+            <a routerLink="/admin/amenities" routerLinkActive="active" class="menu-item">
+                <span class="icon">✨</span> Tiện ích chung
+            </a>
+            <a routerLink="/admin/room-views" routerLinkActive="active" class="menu-item">
+                <span class="icon">🖼️</span> Hướng nhìn phòng
+            </a>
+            <a routerLink="/admin/bed-types" routerLinkActive="active" class="menu-item">
+                <span class="icon">🛏️</span> Các loại giường
+            </a>
+
+            <p class="menu-label" style="margin-top: 20px;">HỆ THỐNG</p>
+
+            <a routerLink="/admin/contacts" routerLinkActive="active" class="menu-item">
+                <span class="icon">📬</span> Tin nhắn hỗ trợ
+            </a>
+            <a routerLink="/admin/promotions" routerLinkActive="active" class="menu-item">
+                <span class="icon">📬</span> Khuyến mãi
+            </a>
+
+            <a routerLink="/admin/ui-settings" routerLinkActive="active" class="menu-item">
+                <span class="icon">⚙️</span> Cấu hình giao diện
+            </a>
+        </nav>
+    </aside>
+
+    <div class="admin-content-area">
+        <header class="admin-header">
+            <div class="header-left">
+                <h2>Xin chào, {{ adminName }}</h2>
+            </div>
+            <div class="header-right">
+                <span class="role-badge">{{ adminRole | uppercase }}</span>
+                <button class="btn-logout" (click)="onLogout()">Đăng xuất</button>
+            </div>
+        </header>
+
+        <main class="admin-main">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>

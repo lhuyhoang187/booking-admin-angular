@@ -1,11 +1,18 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideHttpClient, withFetch } from '@angular/common/http'; // <-- Import thêm withFetch
+
+// Import các thư viện cần thiết
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './interceptors/auth-interceptor'; // Đảm bảo đường dẫn đúng
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withFetch()) // <-- Thêm withFetch() vào đây
+    // Kết hợp cả fetch API và Interceptor vào đây
+    provideHttpClient(
+      withFetch(), 
+      withInterceptors([authInterceptor])
+    )
   ]
 };

@@ -1,0 +1,76 @@
+<div class="staff-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 style="color: #1e1b4b; margin: 0; font-weight: 800;">Nhóm Quyền & Vai Trò</h2>
+            <p style="color: #64748b;">Tạo các nhóm quyền để cấp cho Nhân viên (Lễ tân, Kế toán...)</p>
+        </div>
+        <button class="btn btn-primary fw-bold"
+            style="background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%); border: none;"
+            (click)="openAddModal()">
+            + Tạo Nhóm Mới
+        </button>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead style="background-color: #f8fafc;">
+                    <tr>
+                        <th class="p-3">Tên Nhóm</th>
+                        <th>Số lượng quyền hạn</th>
+                        <th>Ngày tạo</th>
+                        <th class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="isLoading">
+                        <td colspan="4" class="text-center p-4">Đang tải...</td>
+                    </tr>
+                    <tr *ngIf="!isLoading && roles.length === 0">
+                        <td colspan="4" class="text-center p-4 text-muted">Chưa có nhóm quyền nào.</td>
+                    </tr>
+
+                    <tr *ngFor="let role of roles">
+                        <td class="p-3 fw-bold text-primary">{{ role.name }}</td>
+                        <td><span class="badge bg-secondary">{{ role.permissions?.length || 0 }} quyền</span></td>
+                        <td>{{ role.created_at | date:'dd/MM/yyyy' }}</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-light text-primary me-2" (click)="openEditModal(role)">✏️
+                                Sửa</button>
+                            <button class="btn btn-sm btn-light text-danger" (click)="deleteRole(role.id)">🗑️
+                                Xóa</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="custom-modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="custom-modal-content" (click)="$event.stopPropagation()" style="max-width: 600px;">
+        <div class="modal-header border-bottom p-4 d-flex justify-content-between align-items-center bg-light">
+            <h4 class="mb-0 fw-bold">{{ isEditMode ? 'Cập nhật Nhóm' : 'Tạo Nhóm quyền' }}</h4>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body p-4">
+            <div class="mb-4">
+                <label class="form-label fw-bold">Tên nhóm quyền (VD: Lễ tân ca đêm) *</label>
+                <input type="text" class="form-control" [(ngModel)]="formData.name">
+            </div>
+
+            <label class="form-label fw-bold">Chọn các quyền cho phép truy cập:</label>
+            <div class="permissions-grid">
+                <div class="form-check" *ngFor="let p of availablePermissions">
+                    <input class="form-check-input" type="checkbox" [id]="p.key" [checked]="hasPermission(p.key)"
+                        (change)="togglePermission(p.key, $event)">
+                    <label class="form-check-label" [for]="p.key">{{ p.name }}</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer p-3 bg-light border-top text-end">
+            <button class="btn btn-secondary me-2" (click)="closeModal()">Hủy</button>
+            <button class="btn btn-primary" (click)="saveRole()">Lưu Nhóm</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="admin-card">
+    <div class="d-flex justify-content-between align-items-start mb-4">
+        <div>
+            <h2 class="page-title">Quản Lý Loại Giường</h2>
+            <p class="page-subtitle">Thiết lập danh mục các loại giường (Bed Types) cho hệ thống.</p>
+        </div>
+        <button class="btn btn-primary btn-add" (click)="openAddModal()">+ Thêm Loại Giường</button>
+    </div>
+
+    <div *ngIf="loading" class="text-center my-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2 text-muted">Đang tải dữ liệu...</p>
+    </div>
+
+    <div class="table-responsive" *ngIf="!loading">
+        <table class="table align-middle custom-table">
+            <thead>
+                <tr>
+                    <th width="10%">ID</th>
+                    <th width="40%">Tên Loại Giường</th>
+                    <th width="20%">Trạng Thái</th>
+                    <th width="30%">Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let bed of bedTypes">
+                    <td>{{ bed.id }}</td>
+                    <td class="fw-bold">{{ bed.name }}</td>
+                    <td>
+                        <span class="custom-badge" [ngClass]="bed.status ? 'badge-active' : 'badge-inactive'">
+                            {{ bed.status ? 'Hoạt động' : 'Tạm ẩn' }}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-warning btn-sm btn-action me-2" (click)="openEditModal(bed)">Sửa</button>
+                        <button class="btn btn-danger btn-sm btn-action" (click)="deleteBed(bed.id)">Xóa</button>
+                    </td>
+                </tr>
+                <tr *ngIf="bedTypes.length === 0">
+                    <td colspan="4" class="text-center py-4 text-muted">Chưa có dữ liệu loại giường nào.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" [style.display]="showModal ? 'flex' : 'none'">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ isEditMode ? 'Sửa Loại Giường' : 'Thêm Loại Giường' }}</h5>
+                <button type="button" class="btn-close" (click)="closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Tên Loại Giường <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" [(ngModel)]="currentBed.name"
+                        placeholder="VD: Giường Đôi Lớn (King size)">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Trạng Thái</label>
+                    <select class="form-select" [(ngModel)]="currentBed.status">
+                        <option [ngValue]="1">Hoạt động</option>
+                        <option [ngValue]="0">Tạm ẩn</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light border" (click)="closeModal()">Hủy</button>
+                <button type="button" class="btn btn-primary px-4" (click)="saveBed()">Lưu Lại</button>
+            </div>
+        </div>
+    </div>
+</div>

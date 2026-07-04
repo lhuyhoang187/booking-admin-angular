@@ -1,0 +1,67 @@
+<div class="support-container fade-in-up">
+    <div class="inbox-sidebar">
+        <div class="inbox-header">
+            <h3>Hộp thư hỗ trợ</h3>
+        </div>
+        <div class="contact-list">
+            <div *ngIf="contacts.length === 0" class="empty-list">Không có tin nhắn nào.</div>
+
+            <div *ngFor="let item of contacts" class="contact-item" [class.active]="selectedContact?.id === item.id"
+                (click)="openChat(item)">
+
+                <div class="avatar">{{ item?.full_name?.charAt(0) || 'K' }}</div>
+
+                <div class="contact-info">
+                    <div class="contact-top">
+                        <span class="name">{{ item?.full_name || 'Khách hàng' }}</span>
+                        <span class="status-dot" *ngIf="item?.status === 0"></span>
+                    </div>
+                    <div class="contact-msg">{{ item?.message }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-area">
+        <div *ngIf="!selectedContact" class="empty-chat">
+            <div class="empty-icon">💬</div>
+            <p>Chọn một tin nhắn để xem và phản hồi</p>
+        </div>
+
+        <div *ngIf="selectedContact" class="chat-box">
+            <div class="chat-header">
+                <div class="chat-title">
+                    <h4>Đang chat với: {{ selectedContact?.full_name || 'Khách hàng' }}</h4>
+                    <span class="booking-tag" *ngIf="selectedContact?.booking_id">
+                        Mã đơn: #{{ selectedContact?.booking_id }}
+                    </span>
+                </div>
+                <button class="btn-close-chat" (click)="selectedContact = null">✕</button>
+            </div>
+
+            <div class="chat-history" #scrollMe>
+                <div *ngFor="let msg of messages" class="chat-bubble"
+                    [class.guest-bubble]="msg?.sender_type === 'customer'"
+                    [class.host-bubble]="msg?.sender_type === 'partner'">
+
+                    <div class="bubble-content">{{ msg?.message }}</div>
+                    <div class="bubble-time">{{ msg?.created_at | date:'dd/MM HH:mm' }}</div>
+                </div>
+            </div>
+
+            <div class="chat-input-area" *ngIf="selectedContact?.status !== 2">
+                <textarea [(ngModel)]="replyMessage" placeholder="Nhập tin nhắn phản hồi cho khách..." rows="3"
+                    (keydown.enter)="sendReply(); $event.preventDefault()"></textarea>
+                <div class="chat-actions">
+                    <button class="btn-send" (click)="sendReply()" [disabled]="!replyMessage.trim()">
+                        Gửi phản hồi 🚀
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-resolved" *ngIf="selectedContact?.status === 2">
+                ✅ Yêu cầu này đã được giải quyết và đóng lại.
+            </div>
+        </div>
+    </div>
+</div>

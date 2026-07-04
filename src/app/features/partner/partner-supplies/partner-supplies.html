@@ -1,0 +1,80 @@
+<div class="partner-container">
+    <div class="header-action">
+        <div>
+            <h2>Bảng Giá Đền Bù Tài Sản / Vật Tư</h2>
+            <p>Thiết lập danh mục các tài sản, vật tư và mức phí phạt áp dụng khi khách làm hỏng/mất.</p>
+        </div>
+        <button class="btn btn-primary" (click)="openModal()">+ Thêm Tài Sản</button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">Đang tải danh sách...</div>
+
+    <table class="table" *ngIf="!isLoading && itemList.length > 0">
+        <thead>
+            <tr>
+                <th style="width: 50%;">Tên Tài Sản / Vật Tư</th>
+                <th style="white-space: nowrap;">Phí Đền Bù (VNĐ)</th>
+                <th style="white-space: nowrap; text-align: center;">Trạng Thái</th>
+                <th style="width: 140px; text-align: center;">Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of itemList">
+                <td><strong>{{ item.name }}</strong></td>
+
+                <td style="color: #dc3545; font-weight: bold; white-space: nowrap;">
+                    {{ item.price_per_unit | number:'1.0-0' }}đ
+                </td>
+
+                <td style="white-space: nowrap; text-align: center;">
+                    <span class="badge" [class.bg-success]="item.status == 1" [class.bg-danger]="item.status == 0">
+                        {{ item.status == 1 ? 'Đang áp dụng' : 'Ngừng áp dụng' }}
+                    </span>
+                </td>
+
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn btn-warning" (click)="openModal(item)">Sửa giá</button>
+                        <button class="btn btn-danger" *ngIf="item.status == 1"
+                            (click)="toggleStatus(item, 0)">Ngừng</button>
+                        <button class="btn btn-success" *ngIf="item.status == 0" (click)="toggleStatus(item, 1)">Mở
+                            Lại</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="!isLoading && itemList.length === 0" class="empty-state">
+        Bảng giá đền bù đang trống. Hãy bấm nút phía trên để thêm mới!
+    </div>
+</div>
+
+<div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+        <h3>{{ isEditMode ? 'Cập Nhật Phí Đền Bù' : 'Thêm Tài Sản Vào Bảng Giá' }}</h3>
+
+        <div class="form-group">
+            <label>Tên tài sản/vật tư (*):</label>
+            <input type="text" class="form-control" [(ngModel)]="currentItem.name"
+                placeholder="VD: Khăn tắm lớn, Smart TV...">
+        </div>
+
+        <div class="form-group">
+            <label>Phí đền bù áp dụng (VNĐ) (*):</label>
+            <input type="number" class="form-control" [(ngModel)]="currentItem.price" placeholder="0" min="0">
+            <small style="color: #666; margin-top: 5px; display: block; font-style: italic;">
+                * Mức phí đền bù này sẽ được tự động đưa vào hóa đơn khi lễ tân báo cáo khách làm hỏng/mất.
+            </small>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn btn-secondary" (click)="closeModal()">Hủy</button>
+            <button class="btn btn-primary" (click)="saveItem()">Lưu Lại</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast-notification" [class.toast-error]="toastType === 'error'" *ngIf="showToast">
+    {{ toastMessage }}
+</div>

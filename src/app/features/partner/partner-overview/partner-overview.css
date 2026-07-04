@@ -1,0 +1,108 @@
+:host {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.fade-in-up {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.page-title {
+    margin-top: 0;
+    color: #1e1b4b;
+    margin-bottom: 5px;
+}
+
+.page-subtitle {
+    color: #64748b;
+    margin-bottom: 30px;
+}
+
+.stats-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    flex: 1;
+    min-width: 250px;
+    border-radius: 12px;
+    padding: 25px;
+    transition: transform 0.2s ease-out;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Thẻ thống kê màu Xanh lá */
+.stat-card-green {
+    background-color: #ecfdf5;
+    border: 1px solid #a7f3d0;
+}
+
+.stat-card-green h4 {
+    margin: 0 0 15px 0;
+    color: #065f46;
+    font-size: 16px;
+}
+
+.stat-card-green .stat-value {
+    font-size: 40px;
+    font-weight: 800;
+    color: #10b981;
+}
+
+/* Thẻ thống kê màu Xanh dương */
+.stat-card-blue {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+}
+
+.stat-card-blue h4 {
+    margin: 0 0 15px 0;
+    color: #1e40af;
+    font-size: 16px;
+}
+
+.stat-card-blue .stat-value {
+    font-size: 40px;
+    font-weight: 800;
+    color: #3b82f6;
+}
+
+/* Thẻ thống kê màu Cam/Vàng */
+.stat-card-yellow {
+    background-color: #fffbeb;
+    border: 1px solid #fde68a;
+}
+
+.stat-card-yellow h4 {
+    margin: 0 0 15px 0;
+    color: #92400e;
+    font-size: 16px;
+}
+
+.stat-card-yellow .stat-value {
+    font-size: 40px;
+    font-weight: 800;
+    color: #f59e0b;
+}

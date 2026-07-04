@@ -1,0 +1,233 @@
+.inventory-container {
+    padding: 5px;
+}
+
+.table-matrix th,
+.table-matrix td {
+    text-align: center;
+    vertical-align: middle;
+    min-width: 90px;
+    font-size: 13px;
+    border: 1px solid #e2e8f0;
+}
+
+.table-matrix .sticky-col {
+    position: sticky;
+    left: 0;
+    background-color: #fff;
+    text-align: left;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+    z-index: 2;
+}
+
+.day-header {
+    background-color: #f8fafc;
+}
+
+.day-header.weekend {
+    background-color: #fee2e2 !important;
+}
+
+.day-name {
+    font-weight: 800;
+    color: #1e293b;
+}
+
+.matrix-cell {
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+    height: 55px;
+}
+
+.matrix-cell:hover {
+    background-color: #f1f5f9;
+    box-shadow: inset 0 0 0 2px #6366f1;
+}
+
+.cell-closed {
+    background-color: #fef2f2 !important;
+}
+
+.cell-custom {
+    background-color: #eff6ff;
+}
+
+.indicator-dot {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 5px;
+    height: 5px;
+    background-color: #3b82f6;
+    border-radius: 50%;
+}
+
+.custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
+
+.custom-modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Chỉ dẫn màu sắc */
+.badge-legend {
+    display: inline-block;
+    width: 25px;
+    height: 15px;
+    border-radius: 4px;
+    border: 1px solid #cbd5e1;
+    vertical-align: middle;
+}
+
+.mode-base {
+    background-color: #ffffff;
+}
+
+.mode-custom {
+    background-color: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.mode-closed {
+    background-color: #fef2f2;
+    border-color: #fecaca;
+}
+
+/* Custom nút trong modal */
+.btn-role-select {
+    border: 1px solid #cbd5e1;
+    background-color: #fff;
+    color: #475569;
+    font-weight: 500;
+}
+
+.btn-role-select.active {
+    background-color: #1e293b;
+    border-color: #1e293b;
+    color: #fff;
+}
+
+/* Nút ẩn hiện khi di chuột vào ô ma trận */
+.matrix-cell {
+    position: relative;
+}
+
+.quick-toggle-btn {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    font-size: 10px;
+    padding: 1px 6px;
+    background-color: #1e293b;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.matrix-cell:hover .quick-toggle-btn {
+    display: block;
+}
+
+/* Tùy chỉnh màu nền cho ô tăng/giảm giá */
+.bg-increase {
+    background-color: #f0fdf4 !important;
+}
+
+/* Xanh nhạt */
+.bg-decrease {
+    background-color: #fef2f2 !important;
+}
+
+/* Đỏ nhạt */
+.cell-closed {
+    background-color: #f87171 !important;
+    color: white !important;
+}
+
+/* Bố cục bên trong ô (Cell) */
+.cell-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 65px;
+}
+
+.icon-manual {
+    font-size: 11px;
+    filter: grayscale(100%) opacity(0.5);
+}
+
+.icon-trend {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.cell-price {
+    font-size: 13px;
+    color: #1e293b;
+}
+
+.percent-text {
+    font-size: 9px;
+    color: #64748b;
+    font-weight: 700;
+}
+
+.progress-bar-tiny {
+    height: 5px;
+    border-radius: 3px;
+}
+
+/* Nút ẩn hiện khi di chuột vào ô ma trận */
+.matrix-cell {
+    position: relative;
+    vertical-align: top !important;
+    padding: 0 !important;
+}
+
+.quick-toggle-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    font-size: 11px;
+    padding: 4px 8px;
+    background-color: #1e293b;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.matrix-cell:hover {
+    box-shadow: inset 0 0 0 2px #6366f1;
+}
+
+.matrix-cell:hover .cell-content {
+    opacity: 0.2;
+    /* Làm mờ nội dung để hiện rõ nút bấm nhanh */
+}
+
+.matrix-cell:hover .quick-toggle-btn {
+    display: block;
+}

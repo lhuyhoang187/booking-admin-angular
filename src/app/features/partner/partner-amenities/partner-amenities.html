@@ -1,0 +1,26 @@
+<div class="partner-container">
+  <h2>Cập Nhật Tiện Ích Khách Sạn</h2>
+  <p>Vui lòng đánh dấu vào các tiện ích mà khách sạn của bạn đang cung cấp.</p>
+
+  <div *ngIf="isLoading" class="loading">Đang tải danh sách tiện ích...</div>
+
+  <div class="amenities-grid" *ngIf="!isLoading">
+    <label class="amenity-card" *ngFor="let item of allAmenities">
+      <input type="checkbox" 
+             [checked]="selectedIds.includes(item.id)" 
+             (change)="toggleAmenity(item.id, $event)">
+      <div class="card-content">
+        <span class="icon">{{ item.icon }}</span>
+        <span class="name">{{ item.name }}</span>
+      </div>
+    </label>
+  </div>
+
+  <div class="actions" *ngIf="!isLoading">
+    <button class="btn btn-primary" (click)="saveAmenities()">Lưu Cập Nhật Tiện Ích</button>
+  </div>
+
+  <div class="toast-notification" [class.toast-error]="toastType === 'error'" *ngIf="showToast">
+    {{ toastMessage }}
+  </div>
+</div>

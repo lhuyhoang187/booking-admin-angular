@@ -1,0 +1,113 @@
+<div class="fade-in-up">
+    <h2 class="page-title">Hồ sơ Khách sạn</h2>
+
+    <form #profileForm="ngForm" (ngSubmit)="saveProfile()" novalidate>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="image-upload-section flex-column align-items-center text-center">
+                    <div class="image-preview-box mb-3">
+                        <img *ngIf="imagePreviewUrl" [src]="imagePreviewUrl" class="image-preview-img" alt="Ảnh bìa">
+                        <span *ngIf="!imagePreviewUrl" class="image-empty-text">Chưa có ảnh bìa</span>
+                    </div>
+                    <div class="upload-controls w-100">
+                        <label class="upload-label text-primary">📷 Ảnh bìa Khách sạn</label>
+                        <p class="upload-desc" style="font-size: 11px;">Kích thước hiển thị 16:9. Tối đa 20MB.</p>
+                        <input type="file" accept="image/*" (change)="onFileSelected($event)" class="file-input w-100">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="image-upload-section flex-column align-items-center text-center"
+                    style="border-left: 1px dashed #cbd5e1; padding-left: 20px;">
+                    <div class="image-preview-box mb-3">
+                        <img *ngIf="licensePreviewUrl" [src]="licensePreviewUrl" class="image-preview-img"
+                            alt="Giấy phép">
+                        <span *ngIf="!licensePreviewUrl" class="image-empty-text">Chưa có ảnh GPKD</span>
+                    </div>
+                    <div class="upload-controls w-100">
+                        <label class="upload-label text-warning">📜 Ảnh Giấy Phép Kinh Doanh</label>
+                        <p class="upload-desc" style="font-size: 11px;">Bảo mật tuyệt đối, chỉ dùng để xác thực hệ
+                            thống.</p>
+                        <input type="file" accept="image/*" (change)="onLicenseFileSelected($event)"
+                            class="file-input w-100">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="form-row">
+            <div class="form-col-large">
+                <label class="form-label">Tên Khách sạn (*)</label>
+                <input type="text" [(ngModel)]="profile.name" name="name" required class="form-control">
+            </div>
+            <div class="form-col-small">
+                <label class="form-label">Mã số thuế doanh nghiệp</label>
+                <input type="text" [(ngModel)]="profile.tax_code" name="tax_code" placeholder="VD: 0312345678"
+                    class="form-control" style="border-color: #f59e0b;">
+            </div>
+        </div>
+
+        <div class="form-row mt-3">
+            <div class="form-col">
+                <label class="form-label">Tỉnh / Thành phố (*)</label>
+                <input type="text" list="provinceList" [(ngModel)]="profile.city" (ngModelChange)="onProvinceChange()"
+                    name="province" placeholder="-- Gõ để tìm Tỉnh/Thành --" required class="form-control">
+                <datalist id="provinceList">
+                    <option *ngFor="let p of provinces" [value]="p.name"></option>
+                </datalist>
+            </div>
+
+            <div class="form-col">
+                <label class="form-label">Quận / Huyện (*)</label>
+                <input type="text" list="districtList" [(ngModel)]="selectedDistrictName"
+                    (ngModelChange)="onDistrictChange()" name="district" placeholder="-- Gõ để tìm Quận/Huyện --"
+                    required [disabled]="!districts.length" class="form-control">
+                <datalist id="districtList">
+                    <option *ngFor="let d of districts" [value]="d.name"></option>
+                </datalist>
+            </div>
+
+            <div class="form-col">
+                <label class="form-label">Phường / Xã (*)</label>
+                <input type="text" list="wardList" [(ngModel)]="selectedWardName" name="ward"
+                    placeholder="-- Gõ để tìm Phường/Xã --" required [disabled]="!wards.length" class="form-control">
+                <datalist id="wardList">
+                    <option *ngFor="let w of wards" [value]="w.name"></option>
+                </datalist>
+            </div>
+        </div>
+
+        <div class="form-row mt-3">
+            <div class="form-col-large">
+                <label class="form-label">Số nhà, Tên đường (*)</label>
+                <input type="text" [(ngModel)]="streetAddress" name="streetAddress"
+                    placeholder="Ví dụ: Số 123, Đường Lê Lợi" required class="form-control">
+            </div>
+
+            <div class="form-col-small">
+                <label class="form-label">Hạng sao</label>
+                <select [(ngModel)]="profile.star_rating" name="star_rating" class="form-control">
+                    <option [value]="1">1 Sao</option>
+                    <option [value]="2">2 Sao</option>
+                    <option [value]="3">3 Sao</option>
+                    <option [value]="4">4 Sao</option>
+                    <option [value]="5">5 Sao</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+            <label class="form-label">Mô tả giới thiệu</label>
+            <textarea [(ngModel)]="profile.description" name="description" rows="5" class="form-control"></textarea>
+        </div>
+
+        <button type="submit" [disabled]="profileForm.invalid" [style.opacity]="profileForm.invalid ? '0.5' : '1'"
+            [style.cursor]="profileForm.invalid ? 'not-allowed' : 'pointer'" class="btn-submit mt-4">
+            💾 Lưu Thông Tin
+        </button>
+    </form>
+</div>

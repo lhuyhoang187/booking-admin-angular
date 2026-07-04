@@ -1,0 +1,99 @@
+<div class="profile-container">
+
+    <div style="margin-bottom: 30px;">
+        <h2 style="color: #1e1b4b; margin: 0; font-weight: 800;">Quản Lý Tài Khoản</h2>
+        <p style="color: #64748b; margin-top: 5px;">Xem và cập nhật thông tin cá nhân, cài đặt bảo mật.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 col-lg-3 mb-4">
+            <div class="profile-menu-card">
+                <button class="profile-tab-btn" [class.active-tab]="activeTab === 'profile'"
+                    (click)="activeTab = 'profile'">
+                    👤 Hồ sơ cá nhân
+                </button>
+                <button class="profile-tab-btn" [class.active-tab]="activeTab === 'security'"
+                    (click)="activeTab = 'security'">
+                    🔒 Bảo mật & Mật khẩu
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-8 col-lg-9">
+
+            <div *ngIf="isLoading" style="text-align: center; padding: 40px; color: #64748b;">
+                ⏳ Đang tải dữ liệu...
+            </div>
+
+            <div class="profile-content-card fade-in-up" *ngIf="!isLoading && activeTab === 'profile'">
+                <h4 class="fw-bold">Thông tin cơ bản</h4>
+                <p style="color: #64748b; font-size: 14px; margin-bottom: 25px;">
+                    Những thông tin này giúp nền tảng liên hệ với bạn trong các trường hợp cần hỗ trợ.
+                </p>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <label class="form-label fw-bold">Họ và tên lót (*)</label>
+                        <input type="text" class="form-control" [(ngModel)]="profileData.last_name">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Tên (*)</label>
+                        <input type="text" class="form-control" [(ngModel)]="profileData.first_name">
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <label class="form-label fw-bold">Số điện thoại</label>
+                        <input type="tel" class="form-control" [(ngModel)]="profileData.phone"
+                            placeholder="Ví dụ: 0987654321">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold" style="color: #94a3b8;">Email đăng nhập</label>
+                        <input type="email" class="form-control" [(ngModel)]="profileData.email" readonly
+                            title="Không thể tự ý thay đổi Email">
+                        <small style="color: #94a3b8; font-size: 12px; margin-top: 5px; display: block;">
+                            Email dùng để định danh đăng nhập, không thể thay đổi.
+                        </small>
+                    </div>
+                </div>
+
+                <div style="text-align: right; border-top: 1px solid #f1f5f9; padding-top: 20px;">
+                    <button class="btn-save" (click)="updateProfile()">Lưu thay đổi</button>
+                </div>
+            </div>
+
+            <div class="profile-content-card fade-in-up" *ngIf="!isLoading && activeTab === 'security'">
+                <h4 class="fw-bold">Đổi mật khẩu</h4>
+                <p style="color: #64748b; font-size: 14px; margin-bottom: 25px;">
+                    Đảm bảo tài khoản của bạn sử dụng mật khẩu dài và khó đoán để tăng tính an toàn.
+                </p>
+
+                <div class="mb-4" style="max-width: 400px;">
+                    <label class="form-label fw-bold">Mật khẩu hiện tại</label>
+                    <input type="password" class="form-control" [(ngModel)]="passwordData.current_password"
+                        placeholder="Nhập mật khẩu đang dùng">
+                </div>
+
+                <div style="height: 1px; background-color: #f1f5f9; margin: 20px 0;"></div>
+
+                <div class="mb-3" style="max-width: 400px;">
+                    <label class="form-label fw-bold">Mật khẩu mới</label>
+                    <input type="password" class="form-control" [(ngModel)]="passwordData.new_password"
+                        placeholder="Tối thiểu 6 ký tự">
+                </div>
+
+                <div class="mb-4" style="max-width: 400px;">
+                    <label class="form-label fw-bold">Xác nhận mật khẩu mới</label>
+                    <input type="password" class="form-control" [(ngModel)]="passwordData.new_password_confirmation"
+                        placeholder="Nhập lại mật khẩu mới">
+                </div>
+
+                <div style="border-top: 1px solid #f1f5f9; padding-top: 20px;">
+                    <button class="btn-dark" (click)="changePassword()">Cập nhật mật khẩu</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

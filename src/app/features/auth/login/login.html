@@ -1,0 +1,28 @@
+<div class="login-container">
+  <div class="login-card">
+
+    <h2 class="login-title">STAYBOOK PARTNER</h2>
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label class="form-label">Email / Tên đăng nhập</label>
+        <input type="email" [(ngModel)]="email" name="email" required class="form-control">
+      </div>
+
+      <div class="form-group-last">
+        <label class="form-label">Mật khẩu</label>
+        <input type="password" [(ngModel)]="password" name="password" required class="form-control">
+      </div>
+
+      <button type="submit" [disabled]="isLoading" class="btn-submit">
+        {{ isLoading ? 'Đang xử lý...' : 'Đăng nhập ngay' }}
+      </button>
+    </form>
+
+    <div class="login-footer">
+      Chưa có tài khoản?
+      <a routerLink="/partner/register" class="login-link">Đăng ký mở bán phòng</a>
+    </div>
+
+  </div>
+</div>

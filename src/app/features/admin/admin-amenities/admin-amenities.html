@@ -1,0 +1,79 @@
+<div class="admin-container">
+    <div class="header-action">
+        <div>
+            <h2>Quản Lý Tiện Ích Chung</h2>
+            <p>Thiết lập danh mục tiện ích cho khách sạn và phòng.</p>
+        </div>
+        <button class="btn btn-primary" (click)="openModal()">+ Thêm Tiện Ích</button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">Đang tải danh sách...</div>
+
+    <table class="table" *ngIf="!isLoading && amenityList.length > 0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên Tiện Ích</th>
+                <th>Icon (Ký hiệu)</th>
+                <th>Phân Loại</th>
+                <th>Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of amenityList">
+                <td>{{ item.id }}</td>
+                <td><strong>{{ item.name }}</strong></td>
+                <td>{{ item.icon || '---' }}</td>
+                <td>
+                    <span class="badge" [class.bg-hotel]="item.type == 1" [class.bg-room]="item.type == 2">
+                        {{ item.type == 1 ? 'Tiện ích Khách sạn' : 'Tiện ích Phòng' }}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn btn-warning" (click)="openModal(item)">Sửa</button>
+                    <button class="btn btn-danger" (click)="deleteAmenity(item.id)">Xóa</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="!isLoading && amenityList.length === 0" class="empty-state">
+        Hệ thống chưa có tiện ích nào.
+    </div>
+
+    <div class="modal" *ngIf="showModal">
+        <div class="modal-content">
+            <h3>{{ isEditMode ? 'Cập Nhật Tiện Ích' : 'Thêm Tiện Ích Mới' }}</h3>
+
+            <div class="form-group">
+                <label>Tên tiện ích (*):</label>
+                <input type="text" class="form-control" [(ngModel)]="currentAmenity.name"
+                    placeholder="VD: Hồ bơi ngoài trời...">
+            </div>
+
+            <div class="form-group">
+                <label>Icon (Mã Emoji hoặc Text):</label>
+                <input type="text" class="form-control" [(ngModel)]="currentAmenity.icon"
+                    placeholder="VD: 🏊‍♂️, WiFi...">
+            </div>
+
+            <div class="form-group">
+                <label>Phân loại (*):</label>
+                <select class="form-control" [(ngModel)]="currentAmenity.type">
+                    <option [value]="1">Tiện ích Khách sạn</option>
+                    <option [value]="2">Tiện ích Phòng</option>
+                </select>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" (click)="closeModal()">Hủy</button>
+                <button class="btn btn-primary" (click)="saveAmenity()">Lưu Lại</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-notification" [class.toast-error]="toastType === 'error'" *ngIf="showToast">
+        {{ toastMessage }}
+    </div>
+
+</div>

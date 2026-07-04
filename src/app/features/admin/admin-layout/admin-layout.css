@@ -1,0 +1,151 @@
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f4f6f9;
+    font-family: sans-serif;
+}
+
+.admin-sidebar {
+    width: 260px;
+    background-color: #1c2930;
+    color: #fff;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.brand {
+    padding: 25px 20px;
+    border-bottom: 1px solid #2d3e47;
+    text-align: center;
+}
+
+.brand h3 {
+    margin: 0;
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+.brand h3 span {
+    color: #0194f3;
+}
+
+.brand small {
+    color: #8fa0a6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
+    display: block;
+}
+
+.menu {
+    padding: 20px 10px;
+    flex: 1;
+}
+
+.menu-label {
+    font-size: 11px;
+    font-weight: bold;
+    color: #5a737e;
+    padding-left: 15px;
+    margin: 20px 0 10px 0;
+    letter-spacing: 0.5px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: #b8c7ce;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 4px;
+    transition: all 0.2s;
+}
+
+.menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.menu-item.active {
+    background-color: #0194f3;
+    color: #fff;
+    font-weight: bold;
+}
+
+.menu-item.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.menu-item .icon {
+    margin-right: 12px;
+    font-size: 16px;
+}
+
+.admin-content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    width: calc(100% - 260px);
+}
+
+.admin-header {
+    height: 70px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.header-left h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #222;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.role-badge {
+    background-color: #e0f2fe;
+    color: #0384c7;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+.btn-logout {
+    background: none;
+    border: 1px solid #ccc;
+    padding: 6px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #555;
+    transition: all 0.2s;
+}
+
+.btn-logout:hover {
+    background-color: #fee2e2;
+    color: #ef4444;
+    border-color: #fca5a5;
+}
+
+.admin-main {
+    padding: 30px;
+    flex: 1;
+}

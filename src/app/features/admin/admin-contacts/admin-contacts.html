@@ -1,0 +1,122 @@
+<div class="admin-support-page fade-in-up">
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">Tin nhắn Hệ thống (Contacts)</h2>
+            <p class="page-subtitle">Quản lý góp ý, báo lỗi và yêu cầu từ khách hàng vãng lai gửi đến Ban Quản Trị.</p>
+        </div>
+
+        <div class="filter-tabs">
+            <button [class.active]="statusFilter === '0'" (click)="statusFilter = '0'; applyFilter()">📥 Chưa xử
+                lý</button>
+            <button [class.active]="statusFilter === '1'" (click)="statusFilter = '1'; applyFilter()">✅ Đã giải
+                quyết</button>
+            <button [class.active]="statusFilter === 'all'" (click)="statusFilter = 'all'; applyFilter()">📁 Tất
+                cả</button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th style="width: 180px;">NGƯỜI GỬI</th>
+                    <th style="width: 150px;">LIÊN HỆ</th>
+                    <th>CHỦ ĐỀ</th>
+                    <th>NỘI DUNG YÊU CẦU</th>
+                    <th style="width: 130px; text-align: center;">TRẠNG THÁI</th>
+                    <th style="width: 140px; text-align: center;">THAO TÁC</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of filteredContacts" class="ticket-row" [class.unresolved]="item.status === 0">
+                    <td>
+                        <div class="sender-name">{{ item.name }}</div>
+                        <div class="ticket-time">{{ item.created_at | date:'dd/MM/yyyy HH:mm' }}</div>
+                    </td>
+                    <td>
+                        <div class="contact-link"><a href="mailto:{{ item.email }}">📧 {{ item.email }}</a></div>
+                        <div class="contact-phone" *ngIf="item.phone">📞 {{ item.phone }}</div>
+                    </td>
+                    <td>
+                        <span class="subject-text">{{ item.subject || 'Không có chủ đề' }}</span>
+                    </td>
+                    <td>
+                        <div class="message-box line-clamp">{{ item.message }}</div>
+                        <button class="btn-link-detail" (click)="openDetailModal(item)">Xem chi tiết</button>
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="status-badge" [class.badge-new]="item.status === 0"
+                            [class.badge-done]="item.status === 1">
+                            {{ item.status === 0 ? 'Chưa xử lý' : 'Đã xong' }}
+                        </span>
+                    </td>
+                    <td style="text-align: center;">
+                        <button *ngIf="item.status === 0" class="btn-action-done" (click)="handleResolve(item.id)">
+                            Đánh dấu xong
+                        </button>
+                        <a *ngIf="item.status === 1" href="mailto:{{ item.email }}" class="btn-action-email">
+                            Gửi lại Mail
+                        </a>
+                    </td>
+                </tr>
+
+                <tr *ngIf="filteredContacts.length === 0">
+                    <td colspan="6" class="empty-state">
+                        📭 Hiện không có tin nhắn liên hệ nào trong mục này.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal-overlay" *ngIf="selectedContactDetail" (click)="closeDetailModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+
+        <div class="modal-header">
+            <h3>Chi tiết Yêu cầu Hỗ trợ</h3>
+            <button class="btn-close" (click)="closeDetailModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="detail-group">
+                <label>Người gửi:</label>
+                <p><strong>{{ selectedContactDetail.name }}</strong></p>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-group">
+                    <label>Email:</label>
+                    <p><a href="mailto:{{ selectedContactDetail.email }}">{{ selectedContactDetail.email }}</a></p>
+                </div>
+                <div class="detail-group" *ngIf="selectedContactDetail.phone">
+                    <label>Số điện thoại:</label>
+                    <p>{{ selectedContactDetail.phone }}</p>
+                </div>
+                <div class="detail-group">
+                    <label>Thời gian gửi:</label>
+                    <p>{{ selectedContactDetail.created_at | date:'dd/MM/yyyy HH:mm' }}</p>
+                </div>
+            </div>
+
+            <div class="detail-group">
+                <label>Chủ đề:</label>
+                <p class="subject-highlight">{{ selectedContactDetail.subject || 'Không có chủ đề' }}</p>
+            </div>
+
+            <div class="detail-group">
+                <label>Nội dung chi tiết:</label>
+                <div class="full-message-box">{{ selectedContactDetail.message }}</div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button *ngIf="selectedContactDetail.status === 0" class="btn-action-done"
+                (click)="handleResolve(selectedContactDetail.id)">
+                ✅ Đánh dấu đã giải quyết
+            </button>
+            <button class="btn-cancel" (click)="closeDetailModal()">Đóng</button>
+        </div>
+
+    </div>
+</div>

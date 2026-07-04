@@ -1,0 +1,386 @@
+.admin-support-page {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.page-title {
+    margin: 0 0 5px 0;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.page-subtitle {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* FILTER TABS */
+.filter-tabs {
+    display: flex;
+    gap: 5px;
+    background: #f1f5f9;
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.filter-tabs button {
+    border: none;
+    background: transparent;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.filter-tabs button.active {
+    background: white;
+    color: #0f172a;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* ADMIN TABLE */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    min-width: 1000px;
+}
+
+.admin-table th {
+    background-color: #f8fafc;
+    padding: 14px 12px;
+    border-bottom: 2px solid #e2e8f0;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-table td {
+    padding: 16px 12px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: top;
+}
+
+.ticket-row.unresolved {
+    background-color: rgba(249, 115, 22, 0.01);
+}
+
+.ticket-row:hover {
+    background-color: #f8fafc;
+}
+
+.sender-name {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+}
+
+.ticket-time {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+.contact-link a {
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.contact-link a:hover {
+    text-decoration: underline;
+}
+
+.contact-phone {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+.subject-text {
+    font-weight: 600;
+    color: #334155;
+    font-size: 14px;
+}
+
+.message-box {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-width: 400px;
+}
+
+/* BADGES */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.badge-new {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.badge-done {
+    background: #dcfce7;
+    color: #166534;
+}
+
+/* BUTTONS ACION */
+.btn-action-done {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.btn-action-done:hover {
+    background-color: #059669;
+}
+
+.btn-action-email {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-action-email:hover {
+    background-color: #e2e8f0;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: #94a3b8;
+    font-style: italic;
+    font-size: 14px;
+}
+
+/* --- CODE CŨ GIỮ NGUYÊN BÊN TRÊN --- */
+
+/* 👉 CẮT NGẮN CHỮ CHO BẢNG */
+.line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* Chỉ hiện tối đa 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-link-detail {
+    background: transparent;
+    border: none;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 8px;
+}
+
+.btn-link-detail:hover {
+    text-decoration: underline;
+    color: #1d4ed8;
+}
+
+/* 👉 STYLES CHO MODAL POPUP */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.6);
+    /* Nền tối mờ */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+    background: white;
+    width: 650px;
+    max-width: 90%;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    transform: translateY(0);
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    padding: 20px 25px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.btn-close {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: #64748b;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-close:hover {
+    color: #ef4444;
+}
+
+.modal-body {
+    padding: 25px;
+    max-height: 65vh;
+    overflow-y: auto;
+}
+
+.detail-row {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.detail-group {
+    margin-bottom: 15px;
+}
+
+.detail-group label {
+    display: block;
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+}
+
+.detail-group p {
+    margin: 0;
+    font-size: 15px;
+    color: #1e293b;
+}
+
+.detail-group a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.subject-highlight {
+    font-size: 16px;
+    font-weight: bold;
+    color: #0f172a;
+}
+
+.full-message-box {
+    background: #f1f5f9;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    font-size: 15px;
+    color: #334155;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    /* Giữ nguyên các dấu xuống dòng của khách */
+}
+
+.modal-footer {
+    padding: 15px 25px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background: #f8fafc;
+}
+
+.btn-cancel {
+    background: white;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #e2e8f0;
+}

@@ -1,0 +1,189 @@
+<div class="fade-in-up">
+    <div class="page-header">
+        <h2 class="page-title">Các loại phòng <span class="help-icon">?</span></h2>
+        <button class="btn-add-main" (click)="openTypeModal()">+ Thêm mới</button>
+    </div>
+
+    <div class="room-list-container">
+        <div *ngIf="rooms.length === 0" class="empty-msg">Bạn chưa tạo loại phòng nào.</div>
+
+        <div class="custom-room-card" *ngFor="let room of rooms">
+
+            <div class="card-left">
+                <div class="card-info-wrapper">
+                    <img [src]="getRoomImage(room)" alt="Room" class="room-img">
+                    <div class="room-details">
+                        <h3 class="room-name">{{ room.name }}</h3>
+                        <p><strong>Khách:</strong> {{ room.max_adults + room.max_children }} (Tối đa {{
+                            room.max_adults }} Người lớn, {{ room.max_children }} Trẻ em)</p>
+                        <p><strong>Diện tích:</strong> {{ room.room_size ? room.room_size + ' m²' : 'Chưa cập nhật' }}
+                        </p>
+                        <p><strong>Giá:</strong> {{ room.base_price | number }} VND / đêm</p>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="btn-outline" (click)="openTypeModal(room)">Sửa</button>
+                    <button class="btn-outline text-danger" (click)="deleteRoom(room.id)">Xóa</button>
+                </div>
+            </div>
+
+            <div class="card-right">
+                <h4 class="phys-title">Phòng ({{ room.physicalRooms?.length || 0 }}):</h4>
+                <div class="phys-tags">
+                    <div class="phys-tag" *ngFor="let pr of room.physicalRooms" (click)="openPhysModal(room.id, pr)">
+                        {{ pr.room_name }}
+                        <span class="status-dot" [class.dot-green]="pr.status === 1" [class.dot-blue]="pr.status === 2"
+                            [class.dot-orange]="pr.status === 0" [class.dot-red]="pr.status === 3">
+                        </span>
+                    </div>
+                </div>
+                <button class="btn-add-phys" (click)="openPhysModal(room.id)">🔑 Phòng mới</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showTypeModal">
+    <div class="modal-content large-modal">
+        <div class="modal-header">
+            <h3>{{ editingRoomId ? 'Sửa Loại Phòng' : 'Thêm Loại Phòng' }}</h3>
+            <span class="close-btn" (click)="closeTypeModal()">✕</span>
+        </div>
+        <div class="modal-body">
+            <form (ngSubmit)="saveRoom()" class="form-layout">
+
+                <div class="input-row">
+                    <div class="input-group large"><label>Tên phòng *</label><input type="text"
+                            [(ngModel)]="roomForm.name" name="name" required class="form-control"></div>
+                    <div class="input-group"><label>Giá/Đêm (VND) *</label><input type="number"
+                            [(ngModel)]="roomForm.base_price" name="price" required class="form-control"></div>
+                </div>
+
+                <div class="input-row mt-3">
+                    <div class="input-group"><label>Người lớn *</label><input type="number"
+                            [(ngModel)]="roomForm.max_adults" name="adults" required class="form-control"></div>
+                    <div class="input-group"><label>Trẻ em</label><input type="number"
+                            [(ngModel)]="roomForm.max_children" name="children" required class="form-control"></div>
+                    <div class="input-group"><label>Diện tích (m²)</label><input type="number"
+                            [(ngModel)]="roomForm.room_size" name="room_size" class="form-control" placeholder="VD: 35">
+                    </div>
+                </div>
+
+                <div class="input-row mt-3">
+                    <div class="input-group">
+                        <label>Hướng nhìn</label>
+                        <select [(ngModel)]="roomForm.view_id" name="view_id" class="form-control">
+                            <option [ngValue]="null">-- Chọn hướng nhìn --</option>
+                            <option *ngFor="let view of allRoomViews" [ngValue]="view.id">{{ view.name }}</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Loại giường</label>
+                        <select [(ngModel)]="roomForm.bed_type_id" name="bed_type_id" class="form-control">
+                            <option [ngValue]="null">-- Chọn loại giường --</option>
+                            <option *ngFor="let bed of allBedTypes" [ngValue]="bed.id">{{ bed.name }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-row mt-3">
+                    <div class="input-group">
+                        <label>Bao gồm bữa sáng?</label>
+                        <select [(ngModel)]="roomForm.has_breakfast" name="has_breakfast" class="form-control">
+                            <option [ngValue]="0">Không</option>
+                            <option [ngValue]="1">Có</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Chính sách hút thuốc</label>
+                        <select [(ngModel)]="roomForm.smoking_policy" name="smoking_policy" class="form-control">
+                            <option [ngValue]="0">Cấm hút thuốc</option>
+                            <option [ngValue]="1">Cho phép hút thuốc</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-row mt-3">
+                    <div class="input-group" style="width: 100%;">
+                        <label>Chính sách hủy phòng (Ngắn gọn)</label>
+                        <input type="text" [(ngModel)]="roomForm.cancellation_policy" name="cancellation_policy"
+                            class="form-control" placeholder="VD: Miễn phí hủy trước 24h">
+                    </div>
+                </div>
+
+                <div class="input-row mt-3">
+                    <div class="input-group" style="width: 100%;">
+                        <label>Mô tả chi tiết phòng</label>
+                        <textarea [(ngModel)]="roomForm.description" name="description" class="form-control" rows="3"
+                            placeholder="Nhập mô tả chi tiết về phòng..."></textarea>
+                    </div>
+                </div>
+
+                <div class="media-upload-section mt-3">
+                    <div class="upload-area">
+                        <label class="upload-label">Tải lên Ảnh (Có thể chọn nhiều)</label>
+                        <input type="file" multiple (change)="onFileSelected($event)" accept="image/*"
+                            class="file-input">
+                        <div *ngIf="imagePreviews.length > 0" class="image-preview-container">
+                            <div *ngFor="let preview of imagePreviews" class="preview-box"><img [src]="preview"
+                                    class="preview-img"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="amenities-section mt-3">
+                    <label class="amenities-title">Tiện ích:</label>
+                    <div class="amenities-grid">
+                        <label *ngFor="let item of allRoomAmenities" class="amenity-checkbox">
+                            <input type="checkbox" [checked]="selectedAmenityIds.includes(item.id)"
+                                (change)="toggleAmenity(item.id, $event)">
+                            <span>{{ item.icon }} {{ item.name }}</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="modal-footer mt-4">
+                    <button type="button" class="btn-cancel" (click)="closeTypeModal()">Hủy</button>
+                    <button type="submit" class="btn-submit">{{ editingRoomId ? 'Cập nhật' : 'Lưu lại' }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showPhysModal">
+    <div class="modal-content small-modal">
+        <div class="modal-header">
+            <h3>{{ isEditPhysMode ? 'Cập Nhật Phòng' : 'Khai Báo Phòng Mới' }}</h3>
+            <span class="close-btn" (click)="closePhysModal()">✕</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group mb-3">
+                <label>Số phòng / Tên phòng (*):</label>
+                <input type="text" class="form-control mt-1" [(ngModel)]="physRoomForm.room_name"
+                    placeholder="VD: 101, P1D, VIP...">
+            </div>
+
+            <div class="form-group mb-4" *ngIf="!isEditPhysMode">
+                <label>Trạng thái ban đầu:</label>
+                <select class="form-control mt-1" [(ngModel)]="physRoomForm.status">
+                    <option [ngValue]="1">🟢 Trống (Sẵn sàng)</option>
+                    <option [ngValue]="0">🟠 Cần dọn dẹp</option>
+                    <option [ngValue]="3">🔴 Đang bảo trì</option>
+                </select>
+            </div>
+
+            <div class="modal-footer d-flex justify-content-between">
+                <div>
+                    <button *ngIf="isEditPhysMode" type="button" class="btn-cancel" style="background:#ef4444"
+                        (click)="deletePhysRoom(physRoomForm.id)">Xóa phòng này</button>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn-cancel" (click)="closePhysModal()">Hủy</button>
+                    <button type="button" class="btn-submit" (click)="savePhysRoom()">Lưu lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

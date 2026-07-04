@@ -1,0 +1,100 @@
+<div class="fade-in-up booking-dashboard">
+
+    <div class="dashboard-header">
+        <h2 class="page-title">Đặt chỗ</h2>
+
+        <div class="search-box">
+            <input type="text" placeholder="Tìm kiếm tên, sđt, mã đơn..." [(ngModel)]="searchTerm"
+                (ngModelChange)="applyFilters()">
+        </div>
+    </div>
+
+    <div class="custom-tabs">
+        <div class="tab-item" [class.active]="statusFilter === ''" (click)="setStatusFilter('')">
+            Tất cả <span class="count-badge" *ngIf="statusFilter === ''">{{ bookings.length }}</span>
+        </div>
+        <div class="tab-item" [class.active]="statusFilter === '0'" (click)="setStatusFilter('0')">
+            Chưa xác nhận <span class="count-badge" *ngIf="statusFilter === '0'">{{ bookings.length }}</span>
+        </div>
+        <div class="tab-item" [class.active]="statusFilter === '1'" (click)="setStatusFilter('1')">
+            Sắp tới
+        </div>
+        <div class="tab-item" [class.active]="statusFilter === '2'" (click)="setStatusFilter('2')">
+            Hiện hành
+        </div>
+        <div class="tab-item" [class.active]="statusFilter === '3'" (click)="setStatusFilter('3')">
+            Quá khứ
+        </div>
+        <div class="tab-item" [class.active]="statusFilter === '4'" (click)="setStatusFilter('4')">
+            Đã hủy / Bị chặn
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table class="sirvoy-table">
+            <thead>
+                <tr>
+                    <th style="width: 150px;">SỐ ĐẶT CHỖ</th>
+                    <th>TÊN KHÁCH</th>
+                    <th>PHÒNG</th>
+                    <th>CHECKIN / CHECKOUT</th>
+                    <th class="text-right">TỔNG CỘNG</th>
+                    <th>TRẠNG THÁI</th>
+                    <th class="text-center">THAO TÁC</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let bk of bookings">
+                    <td>
+                        <div class="booking-code-wrapper">
+                            <span class="star-icon">☆</span>
+                            <a [routerLink]="['/dashboard/bookings', bk.id]" class="code-link">
+                                {{ bk.booking_code || '#' + bk.id }}
+                            </a>
+                            <span *ngIf="bk.status === 0" class="badge-new">Mới</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="guest-name">{{ bk.guest_name || 'Khách vãng lai' }}</div>
+                        <div class="guest-meta">📞 {{ bk.guest_phone || '---' }}</div>
+                    </td>
+
+                    <td>
+                        <div class="room-tag">{{ getAssignedRooms(bk) }}</div>
+                        <div class="guest-meta text-muted mt-1">{{ bk.details?.[0]?.room_type?.name }}</div>
+                    </td>
+
+                    <td>
+                        <div class="time-row"><span>📥</span> {{ bk.check_in | date:'dd/MM/yyyy' }}</div>
+                        <div class="time-row text-muted mt-1"><span>📤</span> {{ bk.check_out | date:'dd/MM/yyyy' }}
+                        </div>
+                    </td>
+
+                    <td class="text-right fw-bold">
+                        {{ (bk.total_amount || bk.total_price) | number }} đ
+                    </td>
+
+                    <td>
+                        <div class="status-wrapper">
+                            <span class="status-dot" [ngClass]="'dot-' + bk.status"></span>
+                            <span class="status-text">{{ getStatusText(bk.status) }}</span>
+                        </div>
+                    </td>
+
+                    <td class="text-center">
+                        <a [routerLink]="['/dashboard/bookings', bk.id]" class="btn-action">
+                            Chi tiết
+                        </a>
+                    </td>
+                </tr>
+
+                <tr *ngIf="bookings.length === 0">
+                    <td colspan="7" class="empty-state">
+                        Không tìm thấy đơn đặt phòng nào phù hợp.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
